@@ -6,18 +6,18 @@
     <!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
     <!-- ====================================================================== -->
     <parent>
-        <groupId>${groupId}</groupId>
-        <artifactId>${artifactId}</artifactId>
-        <version>${version}</version>
+        <groupId>REPLACE</groupId>
+        <artifactId>REPLACE</artifactId>
+        <version>REPLACE</version>
     </parent>
 
     <!-- ====================================================================== -->
     <!-- P R O J E C T D E S C R I P T I O N -->
     <!-- ====================================================================== -->
 
-    <artifactId>${bundleArtifactId}</artifactId>
+    <artifactId>REPLACE</artifactId>
     <packaging>bundle</packaging>
-    <name>${projectName} Bundle</name>
+    <name>REPLACE</name>
 
     <dependencies>
     </dependencies>
@@ -45,7 +45,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>${groupId}.${artifactId}</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>REPLACE</Bundle-SymbolicName>
                     </instructions>
                 </configuration>
             </plugin>
@@ -53,7 +53,7 @@
                 <groupId>org.apache.sling</groupId>
                 <artifactId>maven-sling-plugin</artifactId>
                 <configuration>
-                    <slingUrl>http://${aem.host}:${aem.port}/apps/${appsFolderName}/install</slingUrl>
+                    <slingUrl>REPLACE</slingUrl>
                     <usePut>true</usePut>
                 </configuration>
             </plugin>

@@ -3,11 +3,11 @@
 <properties>
     <comment>FileVault Package Properties</comment>
     <entry key="buildCount">1</entry>
-    <entry key="version">${version}</entry>
+    <entry key="version">REPLACE</entry>
     <entry key="dependencies" />
     <entry key="packageFormatVersion">2</entry>
-    <entry key="description">${projectName} Content Package</entry>
-    <entry key="group">${packageGroup}</entry>
-    <entry key="name">${artifactId}</entry>
-    <entry key="path">/etc/packages/${packageGroup}/${artifactId}-${version}.zip</entry>
+    <entry key="description">REPLACE</entry>
+    <entry key="group">REPLACE</entry>
+    <entry key="name">REPLACE</entry>
+    <entry key="path">REPLACE</entry>
 </properties>

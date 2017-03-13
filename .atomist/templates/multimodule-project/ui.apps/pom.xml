@@ -6,18 +6,18 @@
     <!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
     <!-- ====================================================================== -->
     <parent>
-        <groupId>${groupId}</groupId>
-        <artifactId>${artifactId}</artifactId>
-        <version>${version}</version>
+        <groupId>REPLACE</groupId>
+        <artifactId>REPLACE</artifactId>
+        <version>REPLACE</version>
     </parent>
 
     <!-- ====================================================================== -->
     <!-- P R O J E C T D E S C R I P T I O N -->
     <!-- ====================================================================== -->
 
-    <artifactId>${contentArtifactId}</artifactId>
+    <artifactId>REPLACE</artifactId>
     <packaging>content-package</packaging>
-    <name>${projectName} Content Package</name>
+    <name>REPLACE</name>
 
     <dependencies>
     </dependencies>
@@ -47,7 +47,7 @@
                 <artifactId>content-package-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <group>${packageGroup}</group>
+                    <group>REPLACE</group>
                     <filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
                     <embeddeds>
                     </embeddeds>

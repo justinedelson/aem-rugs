@@ -2,8 +2,7 @@
  * Created by jedelson on 3/13/17.
  */
 import { Project } from '@atomist/rug/model/Project'
-import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
-import { File } from '@atomist/rug/model/File'
+import { Xml } from '@atomist/rug/model/Xml'
 
 /**
  * Remove files in this project that do not belong in the generated
@@ -33,4 +32,8 @@ export function removeUnnecessaryFiles(project: Project, extraFiles?: string[], 
     for (let d of directoriesToRemove) {
         project.deleteDirectory(d);
     }
+}
+
+export function setProperty(xml : Xml, name : string, value : string) {
+    xml.setTextContentFor(`/properties/entry[@key='${name}']`, value);
 }

@@ -6,7 +6,8 @@ import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpr
 import { File } from '@atomist/rug/model/File'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Xml } from '@atomist/rug/model/Xml'
-import { removeUnnecessaryFiles } from './RugGeneratorFunctions'
+import { removeUnnecessaryFiles, setProperty } from './GeneratorFunctions'
+import { addFilterEntry } from "./EditorFunctions"
 import { XPaths } from "./Constants"
 
 @Generator("CreateAemMultimoduleProject", "Create a skeletal AEM project")
@@ -53,11 +54,19 @@ export class CreateAemMultimoduleProject implements PopulateProject {
     })
     apps_folder_name: string;
 
+    @Parameter({
+        displayName: "AEM Version",
+        description: "An AEM version (must be one of 6.1, 6.2 or 6.3).",
+        pattern: "^6\.1|6\.2|6\.3$",
+        validInput: "a supported AEM Version",
+        minLength: 3,
+        maxLength: 3
+    })
+    aem_version: string;
+
     version: string = "0.0.1-SNAPSHOT";
     bundleArtifactId: string;
     contentArtifactId: string;
-
-
 
     updateReadme(project: Project) {
         console.log("Updating README.md");
@@ -105,13 +114,35 @@ export class CreateAemMultimoduleProject implements PopulateProject {
         console.log("Updating Vault files");
         let eng: PathExpressionEngine = project.context().pathExpressionEngine();
         // TODO - figure out how to properly form the path expression
-        eng.with<File>(project, "//*[@name='properties.xml']", xml => {
-            console.log("edit properties.xml (1) " + xml.path());
-            //xml.setTextContentFor("/properties/entry[@key=version]", this.version);
+        eng.with<Xml>(project, "/Xml()", xml => {
+            if (xml.path() === "ui.apps/src/main/content/META-INF/vault/properties.xml") {
+                setProperty(xml, 'version', this.version);
+                setProperty(xml, 'description', `${project.name()} Content Package`);
+                setProperty(xml, 'group', this.content_package_group);
+                setProperty(xml, 'name', project.name());
+                setProperty(xml, 'path', `/etc/packages/${this.content_package_group}/${project.name()}-${this.version}.zip`);
+            } else if (xml.path() === "ui.apps/src/main/content/META-INF/vault/filter.xml") {
+                addFilterEntry(xml, `/apps/${this.apps_folder_name}`);
+            } else if (xml.path() === "ui.apps/src/main/content/META-INF/vault/definition/.content.xml") {
+                // TODO
+                eng.with<Xml>(xml, "//filter/Xml()", filter => {
+                    console.log("got filter");
+                    console.log(filter);
+                });
+                console.log(xml);
+                console.log(xml.path());
+                console.log(xml.nodeName());
+                for (let child of xml.children()) {
+                    console.log(`child : ${child}`);
+                }
+            }
         });
-        eng.with<Xml>(project, "//*[@name='properties.xml']/Xml()", xml => {
-            console.log("edit properties.xml (2) " + xml.path());
-            //xml.setTextContentFor("/properties/entry[@key=version]", this.version);
+        eng.with<File>(project, "//definition/*[@name='.content.xml']", file => {
+            file.replace('cqVersion="REPLACE"', `cqVersion="${this.aem_version}"`);
+            file.replace('group="REPLACE"', `group="${this.content_package_group}"`);
+            file.replace('name="REPLACE"', `name="${project.name()}"`);
+            file.replace('path="REPLACE"', `path="/etc/packages/${this.content_package_group}/${project.name()}-${this.version}"`);
+            file.replace('version="REPLACE"', `version="${this.version}"`);
         });
     }
 

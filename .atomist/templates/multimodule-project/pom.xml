@@ -6,13 +6,13 @@
     <!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
     <!-- ====================================================================== -->
 
-    <groupId>${groupId}</groupId>
-    <artifactId>${artifactId}</artifactId>
-    <version>${version}</version>
+    <groupId>REPLACE</groupId>
+    <artifactId>REPLACE</artifactId>
+    <version>REPLACE</version>
     <packaging>pom</packaging>
 
-    <name>${projectName} - Reactor Project</name>
-    <description>Maven Multimodule project for ${projectName}.</description>
+    <name>REPLACE</name>
+    <description>REPLACE</description>
 
     <prerequisites>
         <maven>3.0.2</maven>
