@@ -1,0 +1,31 @@
+---
+kind: "operation"
+client: "rug-cli 0.25.0"
+generator:
+  name: "NewStarterRugProject"
+  group: "atomist-rugs"
+  artifact: "rug-editors"
+  version: "0.15.0"
+  origin:
+    repo: "https://github.com/atomist-rugs/rug-editors.git"
+    branch: "a5b209cb26f9be09efa2f2d64b9bad331d400552"
+    sha: "a5b209c"
+  parameters:
+    - "project_name": "aem-rugs"
+
+---
+kind: "operation"
+client: "rug-cli 0.25.0"
+editor:
+  name: "AddTypeScriptGenerator"
+  group: "atomist-rugs"
+  artifact: "rug-editors"
+  version: "0.15.0"
+  origin:
+    repo: "https://github.com/atomist-rugs/rug-editors.git"
+    branch: "a5b209cb26f9be09efa2f2d64b9bad331d400552"
+    sha: "a5b209c"
+  parameters:
+    - "generator_name": "CreateAemMultimoduleProject"
+    - "description": "Create"
+

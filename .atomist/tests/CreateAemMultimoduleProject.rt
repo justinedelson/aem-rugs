@@ -1,0 +1,10 @@
+scenario CreateAemMultimoduleProject should create a new project based on this archive
+
+given
+  Empty
+
+when
+  CreateAemMultimoduleProject
+
+then
+  fileExists "README.md"
