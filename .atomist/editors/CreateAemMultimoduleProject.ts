@@ -7,7 +7,7 @@ import { File } from '@atomist/rug/model/File'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Xml } from '@atomist/rug/model/Xml'
 import { removeUnnecessaryFiles, setProperty } from './GeneratorFunctions'
-import { addFilterEntry } from "./EditorFunctions"
+import { addFilterEntry, addFilterEntryToDefinition } from "./EditorFunctions"
 import { XPaths } from "./Constants"
 
 @Generator("CreateAemMultimoduleProject", "Create a skeletal AEM project")
@@ -123,18 +123,6 @@ export class CreateAemMultimoduleProject implements PopulateProject {
                 setProperty(xml, 'path', `/etc/packages/${this.content_package_group}/${project.name()}-${this.version}.zip`);
             } else if (xml.path() === "ui.apps/src/main/content/META-INF/vault/filter.xml") {
                 addFilterEntry(xml, `/apps/${this.apps_folder_name}`);
-            } else if (xml.path() === "ui.apps/src/main/content/META-INF/vault/definition/.content.xml") {
-                // TODO
-                eng.with<Xml>(xml, "//filter/Xml()", filter => {
-                    console.log("got filter");
-                    console.log(filter);
-                });
-                console.log(xml);
-                console.log(xml.path());
-                console.log(xml.nodeName());
-                for (let child of xml.children()) {
-                    console.log(`child : ${child}`);
-                }
             }
         });
         eng.with<File>(project, "//definition/*[@name='.content.xml']", file => {
@@ -143,6 +131,7 @@ export class CreateAemMultimoduleProject implements PopulateProject {
             file.replace('name="REPLACE"', `name="${project.name()}"`);
             file.replace('path="REPLACE"', `path="/etc/packages/${this.content_package_group}/${project.name()}-${this.version}"`);
             file.replace('version="REPLACE"', `version="${this.version}"`);
+            addFilterEntryToDefinition(file, `/apps/${this.apps_folder_name}`);
         });
     }
 
