@@ -1,0 +1,88 @@
+import { EditProject } from '@atomist/rug/operations/ProjectEditor'
+import { Project } from '@atomist/rug/model/Project'
+import { Pattern } from '@atomist/rug/operations/RugOperation'
+import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
+import { findContentPackageFolderWithFilterCovering, createNodeNameFromTitle } from './EditorFunctions'
+
+let componentMappings = {
+    "breadcrumb" : "core/wcm/components/breadcrumb/v1/breadcrumb",
+    "button" : "core/wcm/components/form/button/v1/button",
+    "formcontainer" : "core/wcm/components/form/container/v1/container",
+    "hidden" : "core/wcm/components/form/hidden/v1/hidden",
+    "options" : "core/wcm/components/form/options/v1/options",
+    "textfield" : "core/wcm/components/form/text/v1/text",
+    "image" : "core/wcm/components/image/v1/image",
+    "list" : "core/wcm/components/list/v1/list",
+    "sharing" : "core/wcm/components/sharing/v1/sharing",
+    "text" : "core/wcm/components/text/v1/text"
+};
+
+
+@Editor("AddCoreComponent", "Add a proxy component for one of the core components to an AEM project.")
+@Tags("documentation")
+export class AddCoreComponent implements EditProject {
+
+    @Parameter({
+        displayName: "Component folder",
+        description: "A folder (generally beginning with /apps) into which the proxy component will be created.",
+        pattern: Pattern.any,
+        validInput: "a folder name",
+        minLength: 1,
+        maxLength: 200
+    })
+    component_folder_name: string;
+
+    @Parameter({
+        displayName: "Component group",
+        description: "The component group name",
+        pattern: Pattern.any,
+        validInput: "a component group name",
+        minLength: 1,
+        maxLength: 30
+    })
+    component_group: string;
+
+    @Parameter({
+        displayName: "Core component name",
+        description: `The core component name (one of ${Object.keys(componentMappings).join(", ")}`,
+        pattern: "^" + Object.keys(componentMappings).join(("|")) + "$",
+        validInput: "a component name",
+        minLength: 1,
+        maxLength: 30
+    })
+    core_component_name: string;
+
+    @Parameter({
+        displayName: "New component title",
+        description: "The newly created component's title",
+        pattern: Pattern.any,
+        validInput: "a component title",
+        minLength: 1,
+        maxLength: 30
+    })
+    component_title: string;
+
+    edit(project: Project) {
+        let jcrRootPath : string = findContentPackageFolderWithFilterCovering(project, this.component_folder_name);
+        if (!jcrRootPath) {
+            project.fail(`Could not find content package project with filter convering '${this.component_folder_name}'.`);
+            return;
+        }
+        let componentFolder = jcrRootPath + this.component_folder_name + "/" + createNodeNameFromTitle(this.component_title);
+        project.addFile(componentFolder + "/.content.xml", `<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root
+    xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Component"
+    componentGroup="${this.component_group}"
+    sling:resourceSuperType="${componentMappings[this.core_component_name]}"
+    jcr:title="${this.component_title}"/>`);
+        if (this.core_component_name === "image") {
+            project.merge("components/image/_cq_editConfig.xml.vm", componentFolder + "/_cq_editConfig.xml", {
+                componentType : this.component_folder_name
+            });
+        }
+    }
+}
+
+export const addCoreComponent = new AddCoreComponent();

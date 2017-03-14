@@ -144,7 +144,7 @@ export class CreateAemMultimoduleProject implements PopulateProject {
         this.bundleArtifactId = `${project.name()}.core`;
         this.contentArtifactId = `${project.name()}.ui.apps`;
 
-        removeUnnecessaryFiles(project, [ "LICENSE", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "README.md" ]);
+        removeUnnecessaryFiles(project, [ "NOTICE", "LICENSE", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "README.md" ]);
         project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/multimodule-project", "");
         this.updateReadme(project);
         this.updatePoms(project);

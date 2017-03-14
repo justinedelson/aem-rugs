@@ -1,5 +1,9 @@
 import { Xml } from '@atomist/rug/model/Xml'
 import { File } from '@atomist/rug/model/File'
+import { Pom } from '@atomist/rug/model/Pom'
+import { Project } from '@atomist/rug/model/Project'
+import { EveryPom } from '@atomist/rug/model/EveryPom'
+import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { DOMParser } from 'xmldom'
 
 export function addFilterEntry(filterXml : Xml, path : string) : void {
@@ -8,7 +12,7 @@ export function addFilterEntry(filterXml : Xml, path : string) : void {
 
 export function addFilterEntryToDefinition(definitionXml : File, path : string) : void {
     let doc = new DOMParser().parseFromString(definitionXml.content(), "text/xml");
-    let filterElement = findFilter(doc.documentElement);
+    let filterElement = findDefinitionFilter(doc.documentElement);
     if (filterElement) {
         let filterCount = countChildNodes(filterElement);
 
@@ -25,7 +29,37 @@ export function addFilterEntryToDefinition(definitionXml : File, path : string) 
     }
 }
 
-function findFilter(documentElement) : any {
+export function findContentPackageFolderWithFilterCovering(project : Project, path: string) : string {
+    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let result: string;
+
+    eng.with<EveryPom>(project, "/EveryPom()", pom => {
+        if (pom.packaging() === "content-package") {
+            let basePath = pom.path().substring(0, pom.path().lastIndexOf("/"));
+            eng.with<Xml>(project, "/Xml()", xml => {
+                let tailMatch = xml.path().match("META\-INF/vault/filter\.xml$");
+                if (tailMatch && xml.underPath(basePath)) {
+                    let doc = new DOMParser().parseFromString(xml.content(), "text/xml");
+                    let filters = doc.getElementsByTagName("filter");
+                    for (let filter of filters) {
+                        let root = filter.getAttribute("root").toString();
+                        // TODO - deal with includes/excludes
+                        if (path.indexOf(root) == 0) {
+                            result = xml.path().substring(0, tailMatch.index) + "jcr_root";
+                        }
+                    }
+                }
+            });
+        }
+    });
+    return result;
+}
+
+export function createNodeNameFromTitle(title: string) : string {
+    return camelCase(title);
+}
+
+function findDefinitionFilter(documentElement) : any {
     for (let child of documentElement.childNodes) {
         if (child.nodeName === "filter") {
             return child;
@@ -43,3 +77,49 @@ function countChildNodes(element) : number {
     }
     return count;
 }
+
+function preserveCamelCase(str: string) : string {
+    let isLastCharLower = false;
+    let isLastCharUpper = false;
+    let isLastLastCharUpper = false;
+
+    for (let i = 0; i < str.length; i++) {
+        const c = str.charAt(i);
+
+        if (isLastCharLower && (/[a-zA-Z]/).test(c) && c.toUpperCase() === c) {
+            str = str.substr(0, i) + '-' + str.substr(i);
+            isLastCharLower = false;
+            isLastLastCharUpper = isLastCharUpper;
+            isLastCharUpper = true;
+            i++;
+        } else if (isLastCharUpper && isLastLastCharUpper && (/[a-zA-Z]/).test(c) && c.toLowerCase() === c) {
+            str = str.substr(0, i - 1) + '-' + str.substr(i - 1);
+            isLastLastCharUpper = isLastCharUpper;
+            isLastCharUpper = false;
+            isLastCharLower = true;
+        } else {
+            isLastCharLower = c.toLowerCase() === c;
+            isLastLastCharUpper = isLastCharUpper;
+            isLastCharUpper = c.toUpperCase() === c;
+        }
+    }
+
+    return str;
+}
+
+export function camelCase(str : string) : string {
+    if (str.length === 0) {
+        return '';
+    }
+
+    if (str.length === 1) {
+        return str.toLowerCase();
+    }
+
+    str = preserveCamelCase(str);
+
+    return str
+        .replace(/^[_.\- ]+/, '')
+        .toLowerCase()
+        .replace(/[_.\- ]+(\w|$)/g, (m, p1) => p1.toUpperCase());
+};
