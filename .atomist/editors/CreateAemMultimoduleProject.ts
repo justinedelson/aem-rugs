@@ -6,7 +6,7 @@ import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpr
 import { File } from '@atomist/rug/model/File'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Xml } from '@atomist/rug/model/Xml'
-import { removeUnnecessaryFiles, setProperty } from './GeneratorFunctions'
+import { removeUnnecessaryFiles, setProperty, addDependencyManagement } from './GeneratorFunctions'
 import { addFilterEntry, addFilterEntryToDefinition } from "./EditorFunctions"
 import { XPaths } from "./Constants"
 
@@ -86,6 +86,7 @@ export class CreateAemMultimoduleProject implements PopulateProject {
             pom.setVersion(this.version);
             pom.setProjectName(`${project.name()} - Reactor Project`);
             pom.setDescription(`Maven Multimodule project for ${project.name()}.`);
+            addDependencyManagement(this.aem_version, pom);
         });
         eng.with<Pom>(project, "/*/*[@name='pom.xml']/Pom()", pom => {
             pom.setParentArtifactId(project.name());

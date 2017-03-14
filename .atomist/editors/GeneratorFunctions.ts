@@ -3,6 +3,8 @@
  */
 import { Project } from '@atomist/rug/model/Project'
 import { Xml } from '@atomist/rug/model/Xml'
+import { Pom } from '@atomist/rug/model/Pom'
+import { Dependencies } from './Constants'
 
 /**
  * Remove files in this project that do not belong in the generated
@@ -34,6 +36,23 @@ export function removeUnnecessaryFiles(project: Project, extraFiles?: string[], 
     }
 }
 
-export function setProperty(xml : Xml, name : string, value : string) {
+export function setProperty(xml : Xml, name : string, value : string): void {
     xml.setTextContentFor(`/properties/entry[@key='${name}']`, value);
+}
+
+export function addDependencyManagement(aemVersion: string, pom: Pom): void {
+    switch (aemVersion) {
+        case "6.1" :
+            Dependencies.osgiCore420.addOrReplaceDependencyManagement(pom);
+            Dependencies.osgiCompendium420.addOrReplaceDependencyManagement(pom);
+            break;
+        case "6.2" :
+            Dependencies.osgiCore420.addOrReplaceDependencyManagement(pom);
+            Dependencies.osgiCompendium420.addOrReplaceDependencyManagement(pom);
+            break;
+        case "6.3" :
+            Dependencies.osgiCore420.addOrReplaceDependencyManagement(pom);
+            Dependencies.osgiCompendium420.addOrReplaceDependencyManagement(pom);
+            break;
+    }
 }
