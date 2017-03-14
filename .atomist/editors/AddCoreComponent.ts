@@ -18,6 +18,7 @@ import { Project } from '@atomist/rug/model/Project'
 import { Pattern } from '@atomist/rug/operations/RugOperation'
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
 import { findContentPackageFolderWithFilterCovering, createNodeNameFromTitle } from './EditorFunctions'
+import { AemPattern } from "./Constants"
 
 let componentMappings = {
     "breadcrumb" : "core/wcm/components/breadcrumb/v1/breadcrumb",
@@ -39,9 +40,9 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "Component folder",
-        description: "A folder (generally beginning with /apps) into which the proxy component will be created.",
-        pattern: Pattern.any,
-        validInput: "a folder name",
+        description: "a folder (beginning with /apps) into which the proxy component will be created.",
+        pattern: AemPattern.appsFolder,
+        validInput: "a folder name under /apps",
         minLength: 1,
         maxLength: 200
     })
@@ -49,8 +50,8 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "Component group",
-        description: "The component group name",
-        pattern: Pattern.any,
+        description: "the component group name",
+        pattern: AemPattern.componentGroup,
         validInput: "a component group name",
         minLength: 1,
         maxLength: 30
@@ -59,9 +60,9 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "Core component name",
-        description: `The core component name (one of ${Object.keys(componentMappings).join(", ")}`,
+        description: `the core component name (one of ${Object.keys(componentMappings).join(", ")}`,
         pattern: "^" + Object.keys(componentMappings).join(("|")) + "$",
-        validInput: "a component name",
+        validInput: `a component name (one of ${Object.keys(componentMappings).join(", ")}`,
         minLength: 1,
         maxLength: 30
     })
@@ -69,7 +70,7 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "New component title",
-        description: "The newly created component's title",
+        description: "the newly created component's title",
         pattern: Pattern.any,
         validInput: "a component title",
         minLength: 1,

@@ -31,9 +31,9 @@ export class CreateAemMultimoduleProject implements PopulateProject {
 
     @Parameter({
         displayName: "Group ID",
-        description: "A Maven Group ID",
+        description: "the Maven Group ID for the generated project",
         pattern: Pattern.group_id,
-        validInput: "a Maven Group ID",
+        validInput: "A Maven Group ID",
         minLength: 1,
         maxLength: 100
     })
@@ -41,7 +41,7 @@ export class CreateAemMultimoduleProject implements PopulateProject {
 
     @Parameter({
         displayName: "Project Name",
-        description: "A Name for your Project",
+        description: "a Name for your Project",
         pattern: Pattern.any,
         validInput: "a Project Name",
         minLength: 1,
@@ -51,7 +51,7 @@ export class CreateAemMultimoduleProject implements PopulateProject {
 
     @Parameter({
         displayName: "Content Package Group",
-        description: "A Group for your Package",
+        description: "a Group for your Package when it is installed in the AEM Package Manager",
         pattern: Pattern.any,
         validInput: "a Group",
         minLength: 1,
@@ -61,8 +61,8 @@ export class CreateAemMultimoduleProject implements PopulateProject {
 
     @Parameter({
         displayName: "/apps folder",
-        description: "A folder under /apps in which components and configs will be created",
-        pattern: Pattern.any,
+        description: "a folder under /apps in which components and configs will be created",
+        pattern: Pattern.java_identifier,
         validInput: "a folder name",
         minLength: 1,
         maxLength: 100

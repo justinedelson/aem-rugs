@@ -41,5 +41,10 @@ export abstract class Dependencies {
     public static slf4jSimple : Dependency = new Dependency("org.slf4j", "slf4j-simple", "1.7.6", "jar", "test");
     public static wcmTaglib : Dependency = new Dependency("com.day.cq.wcm", "cq-wcm-taglib", "5.6.4")
     public static slingTaglib : Dependency = new Dependency("org.apache.sling", "org.apache.sling.scripting.jsp.taglib", "2.2.0")
+}
+
+export abstract class AemPattern {
+    public static componentGroup: string = "^[a-zA-Z][-\\w.]$";
+    public static appsFolder: string = "^\\/apps\\/[-\\w\\/]+$";
 
 }
