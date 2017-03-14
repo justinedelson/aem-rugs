@@ -152,6 +152,7 @@ export class CreateAemMultimoduleProject implements PopulateProject {
         project.addDirectory("java", "core/src/main");
         project.addDirectory("java", "core/src/test");
         project.addDirectory("jcr_root", "ui.apps/src/main/content");
+        project.addFile(`ui.apps/src/main/content/jcr_root/apps/${this.apps_folder_name}/install/.vltignore`, "*.jar");
 
     }
 }
