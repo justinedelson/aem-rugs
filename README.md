@@ -1,17 +1,14 @@
 # aem-rugs
 
-[![Build Status](https://travis-ci.org/atomist-rugs/aem-rugs.svg?branch=master)](https://travis-ci.org/atomist-rugs/aem-rugs)
-[![Slack Status](https://join.atomist.com/badge.svg)](https://join.atomist.com)
-
 [rug]: http://docs.atomist.com/
 
-This [Rug][rug] project contains Atomist Rug archive project.
+This [Rug][rug] project contains Rug Editors and Generators for working with Adobe Experience Manager projects.
 
 ## Rugs
 
 ### CreateAemMultimoduleProject
 
-Create
+Create a new AEM Multimodule Maven project with a single bundle and content-package project.
 
 #### Prerequisites
 
@@ -24,6 +21,11 @@ This Rug takes following parameters.
 Name | Required | Default | Description
 -----|----------|---------|------------
 `project_name` | Yes | | Name of project to be created
+`group_id` | Yes | | Maven Group ID of the project to be created
+`artifact_id` | Yes | | Maven Artifact ID of the project to be created
+`apps_folder_name` | Yes | | The folder under apps into which components and configurations will be placed
+`content_package_group` | Yes | | The content package group name
+`aem_version` | Yes | | The AEM version being targetted by the project (6.1, 6.2 or 6.3)
 
 #### Running
 
@@ -31,21 +33,41 @@ Run this Rug as follows:
 
 ```
 $ cd parent/directory
-$ rug generate atomist-rugs:rug-editors:CreateAemMultimoduleProject \
-    my-new-project
+$ rug generate com.adobe.people.jedelson:aem-rugs:CreateAemMultimoduleProject \
+    my-new-project group_id=com.test artifact_id=test-project \
+    apps_folder_name=test content_package_group=my-packages aem_version=6.3
 ```
 
-Explain what your generator does here.
+### AddCoreComponent
 
-## Support
+Create a new proxy component for one of the AEM Core Components
 
-General support questions should be discussed in the `#support`
-channel on our community Slack team
-at [atomist-community.slack.com][slack].
+#### Prerequisites
 
-If you find a problem, please create an [issue][].
+There must be a content package project under the current directory whose
+filter already contains the new component's parent directory. 
 
-[issue]: https://github.com/atomist-rugs/aem-rugs/issues
+#### Parameters
+
+This Rug takes following parameters.
+
+Name | Required | Default | Description
+-----|----------|---------|------------
+`component_folder_name` | Yes | | The parent folder for the newly created component
+`core_component_name` | Yes | | The name of the core component being proxied
+`component_title` | Yes | | The title of the newly created component
+`component_group` | Yes | | The group of the newly created component
+
+#### Running
+
+Run this Rug as follows:
+
+```
+$ cd parent/directory
+$ rug edit com.adobe.people.jedelson:aem-rugs:AddCoreComponent component_folder_name=/apps/test/components/content \
+    component_group="My Project" core_component_name=image component_title="My Image"
+```
+
 
 ## Development
 
@@ -64,20 +86,3 @@ To create a new release of the project, simply push a tag of the form
 appropriate [semantic version][semver] for release.  For example:
 
 [semver]: http://semver.org
-
-```
-$ git tag -a 1.2.3
-```
-
-The Travis CI build (see badge at the top of this page) will
-automatically create a GitHub release using the tag name for the
-release and the comment provided on the annotated tag as the contents
-of the release notes.  It will also automatically upload the needed
-artifacts.
-
----
-Created by [Atomist][atomist].
-Need Help?  [Join our Slack team][slack].
-
-[atomist]: https://www.atomist.com/
-[slack]: https://join.atomist.com/
