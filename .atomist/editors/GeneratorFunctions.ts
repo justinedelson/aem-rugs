@@ -5,6 +5,7 @@ import { Project } from '@atomist/rug/model/Project'
 import { Xml } from '@atomist/rug/model/Xml'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Dependencies } from './Constants'
+import {Dependency} from "./Dependency";
 
 /**
  * Remove files in this project that do not belong in the generated
@@ -41,18 +42,97 @@ export function setProperty(xml : Xml, name : string, value : string): void {
 }
 
 export function addDependencyManagement(aemVersion: string, pom: Pom): void {
+    let dependencies = [
+        Dependencies.osgiCore420,
+        Dependencies.osgiCompendium420,
+        Dependencies.scrAnnotations,
+        Dependencies.bndAnnotations,
+        Dependencies.servletApi,
+        Dependencies.commonsLang3,
+        Dependencies.commonsLang2,
+        Dependencies.commonsCodec,
+        Dependencies.commonsIo,
+        Dependencies.jstl,
+        Dependencies.jsp,
+        Dependencies.jcr,
+        Dependencies.slf4j,
+        Dependencies.wcmTaglib,
+        Dependencies.slingTaglib
+    ];
+    let testDependencies = [
+        Dependencies.junit,
+        Dependencies.junitAddons,
+        Dependencies.slf4jSimple
+    ];
+
+    dependencies.push(getUberJar(aemVersion));
+
+    let allDependencies = dependencies.concat(testDependencies);
+
+    for (let d of allDependencies) {
+        d.addOrReplaceDependencyManagement(pom);
+    }
+}
+
+export function addContentPackageDependencies(aemVersion: string, pom: Pom): void {
+    let dependencies = [
+        Dependencies.osgiCore420,
+        Dependencies.osgiCompendium420,
+        Dependencies.servletApi,
+        Dependencies.commonsLang3,
+        Dependencies.commonsLang2,
+        Dependencies.jstl,
+        Dependencies.jsp,
+        Dependencies.jcr,
+        Dependencies.slf4j,
+        Dependencies.wcmTaglib,
+        Dependencies.slingTaglib
+    ];
+
+    dependencies.push(getUberJar(aemVersion));
+
+    for (let d of dependencies) {
+        d.addOrReplaceManagedDependency(pom);
+    }
+}
+
+export function addBundleDependencies(aemVersion: string, pom: Pom): void {
+    let dependencies = [
+        Dependencies.osgiCore420,
+        Dependencies.osgiCompendium420,
+        Dependencies.scrAnnotations,
+        Dependencies.bndAnnotations,
+        Dependencies.servletApi,
+        Dependencies.commonsLang3,
+        Dependencies.commonsLang2,
+        Dependencies.commonsCodec,
+        Dependencies.commonsIo,
+        Dependencies.jsp,
+        Dependencies.jcr,
+        Dependencies.slf4j
+    ];
+    let testDependencies = [
+        Dependencies.junit,
+        Dependencies.junitAddons,
+        Dependencies.slf4jSimple
+    ];
+
+    dependencies.push(getUberJar(aemVersion));
+
+    let allDependencies = dependencies.concat(testDependencies);
+
+    for (let d of allDependencies) {
+        d.addOrReplaceManagedDependency(pom);
+    }
+}
+
+function getUberJar(aemVersion: string) : Dependency {
     switch (aemVersion) {
-        case "6.1" :
-            Dependencies.osgiCore420.addOrReplaceDependencyManagement(pom);
-            Dependencies.osgiCompendium420.addOrReplaceDependencyManagement(pom);
-            break;
-        case "6.2" :
-            Dependencies.osgiCore420.addOrReplaceDependencyManagement(pom);
-            Dependencies.osgiCompendium420.addOrReplaceDependencyManagement(pom);
-            break;
-        case "6.3" :
-            Dependencies.osgiCore420.addOrReplaceDependencyManagement(pom);
-            Dependencies.osgiCompendium420.addOrReplaceDependencyManagement(pom);
-            break;
+        case "6.1":
+            return new Dependency("com.adobe.aem", "uber-jar", "6.1.0", "jar", "provided", "obfuscated-apis");
+        case "6.2":
+            return new Dependency("com.adobe.aem", "uber-jar", "6.2.0", "jar", "provided", "apis");
+        case "6.3":
+            return new Dependency("com.adobe.aem", "uber-jar", "6.3.0", "jar", "provided", "apis");
     }
 }

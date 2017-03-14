@@ -7,7 +7,7 @@ export class Dependency {
     scope: string;
     classifier: string;
 
-    constructor(groupId: string, artifactId: string, version: string, scope = "provided", classifier = "") {
+    constructor(groupId: string, artifactId: string, version: string, type = "jar", scope = "provided", classifier = "") {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
@@ -17,6 +17,17 @@ export class Dependency {
 
     addOrReplaceDependencyManagement(pom: Pom) {
         pom.addOrReplaceDependencyManagementDependency(this.groupId, this.artifactId, this.getXml());
+    }
+
+    addOrReplaceManagedDependency(pom: Pom) {
+        if (this.classifier === "") {
+            pom.addOrReplaceDependency(this.groupId, this.artifactId);
+        } else {
+            pom.addOrReplaceNode("/project/dependencies",
+                `/project/dependencies/dependency/artifactId[text()='${this.artifactId}' and ../groupId[text() = '${this.groupId}' and ../classifier[text() = '${this.classifier}']]]/..`,
+                "dependency",
+                `<dependency><groupId>${this.groupId}</groupId><artifactId>${this.artifactId}</artifactId><classifier>${this.classifier}</classifier></dependency>`);
+        }
     }
 
     getXml() : string {

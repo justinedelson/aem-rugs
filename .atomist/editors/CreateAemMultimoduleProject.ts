@@ -6,7 +6,7 @@ import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpr
 import { File } from '@atomist/rug/model/File'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Xml } from '@atomist/rug/model/Xml'
-import { removeUnnecessaryFiles, setProperty, addDependencyManagement } from './GeneratorFunctions'
+import { removeUnnecessaryFiles, setProperty, addDependencyManagement, addContentPackageDependencies, addBundleDependencies } from './GeneratorFunctions'
 import { addFilterEntry, addFilterEntryToDefinition } from "./EditorFunctions"
 import { XPaths } from "./Constants"
 
@@ -97,10 +97,12 @@ export class CreateAemMultimoduleProject implements PopulateProject {
                 pom.setProjectName(`${project.name()} Bundle`);
                 pom.setTextContentFor(XPaths.bsn, `${this.group_id}.${project.name()}`);
                 pom.setTextContentFor(XPaths.slingInstallUrl, `http://\${aem.host}:\${aem.port}/apps/${this.apps_folder_name}/install`);
+                addBundleDependencies(this.aem_version, pom);
             } else if (pom.packaging() === "content-package") {
                 pom.setArtifactId(this.contentArtifactId);
                 pom.setProjectName(`${project.name()} Content Package`);
                 pom.addOrReplaceDependencyOfVersion(this.group_id, this.bundleArtifactId, "${project.version}");
+                addContentPackageDependencies(this.aem_version, pom);
                 pom.addChildNode(XPaths.embeddeds, "embedded", `<embedded>
                             <groupId>${this.group_id}</groupId>
                             <artifactId>${this.bundleArtifactId}</artifactId>
