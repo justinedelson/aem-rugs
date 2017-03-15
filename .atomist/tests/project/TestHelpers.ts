@@ -21,8 +21,6 @@ import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/proje
 import { DOMParser } from 'xmldom';
 import * as xpathSelect from 'xpath.js';
 
-console.log(xpathSelect);
-
 export function countDependenciesInDependencyManagement(pom: Pom): number {
     let doc = new DOMParser().parseFromString(pom.content(), "text/xml");
     return doc.getElementsByTagName("dependencyManagement")[0].getElementsByTagName("dependency").length;
@@ -30,9 +28,11 @@ export function countDependenciesInDependencyManagement(pom: Pom): number {
 
 export function getAttributeValue(file: File, xpath: string): string {
     let doc = new DOMParser().parseFromString(file.content());
-    let xpathResult = xpathSelect(xpath, doc);
+    let xpathResult = xpathSelect(doc, xpath);
 
-    console.log(xpathResult);
+    if (xpathResult.length == 1) {
+        return xpathResult[0].value;
+    }
 
     return null;
 }

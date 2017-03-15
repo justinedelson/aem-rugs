@@ -84,7 +84,10 @@ export class AddCoreComponent implements EditProject {
             project.fail(`Could not find content package project with filter convering '${this.component_folder_name}'.`);
             return;
         }
-        let componentFolder = jcrRootPath + this.component_folder_name + "/" + createNodeNameFromTitle(this.component_title);
+        let componentName = createNodeNameFromTitle(this.component_title);
+        let componentPath = `${this.component_folder_name}/${componentName}`;
+        let relativeComponentPath = componentPath.substring(6);
+        let componentFolder = `${jcrRootPath}${componentPath}`
         project.addFile(componentFolder + "/.content.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root
     xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
@@ -95,7 +98,7 @@ export class AddCoreComponent implements EditProject {
     jcr:title="${this.component_title}"/>`);
         if (this.core_component_name === "image") {
             project.merge("components/image/_cq_editConfig.xml.vm", componentFolder + "/_cq_editConfig.xml", {
-                componentType : this.component_folder_name
+                componentType : relativeComponentPath
             });
         }
     }

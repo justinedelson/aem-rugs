@@ -63,10 +63,10 @@ Then("the image component should be created in the root project", (project: Proj
 
 
 Then("the image component in the root project should have the correct editConfig", (project: Project, world: ProjectScenarioWorld): Result => {
-    let file = project.findFile("src/main/content/jcr_root/apps/test/components/content/myImage/.content.xml");
+    let file = project.findFile("src/main/content/jcr_root/apps/test/components/content/myImage/_cq_editConfig.xml");
     let value = getAttributeValue(file, "/jcr:root/cq:dropTargets/image/parameters/@sling:resourceType");
 
-    if ("test/components/content/components/image" === value) {
+    if ("test/components/content/myImage" === value) {
         return Result.Success;
     } else {
         return Result.Failure(`unexpected resourceType in cq:EditConfig: ${value}`);
@@ -76,7 +76,7 @@ Then("the image component in the root project should have the correct editConfig
 function checkTextComponent(project: Project, path: string) : Result {
     if (project.fileExists(path)) {
         let fileContent = project.findFile(path).content();
-        let expected = `<?xml version="1.0" encoding="UTF-8"?>is t
+        let expected = `<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root
     xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
     xmlns:jcr="http://www.jcp.org/jcr/1.0"
