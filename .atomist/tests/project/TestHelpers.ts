@@ -14,14 +14,27 @@
  * limitations under the License.
  */
 import { Pom } from "@atomist/rug/model/Pom";
+import { File } from "@atomist/rug/model/File";
 import { Result } from "@atomist/rug/test/Result";
 import { Project } from "@atomist/rug/model/Project";
 import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/project/Core";
-import { DOMParser } from 'xmldom'
+import { DOMParser } from 'xmldom';
+import * as xpathSelect from 'xpath.js';
+
+console.log(xpathSelect);
 
 export function countDependenciesInDependencyManagement(pom: Pom): number {
     let doc = new DOMParser().parseFromString(pom.content(), "text/xml");
     return doc.getElementsByTagName("dependencyManagement")[0].getElementsByTagName("dependency").length;
+}
+
+export function getAttributeValue(file: File, xpath: string): string {
+    let doc = new DOMParser().parseFromString(file.content());
+    let xpathResult = xpathSelect(xpath, doc);
+
+    console.log(xpathResult);
+
+    return null;
 }
 
 export function addCommonSteps() {

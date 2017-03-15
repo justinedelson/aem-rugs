@@ -34,6 +34,12 @@ Feature: Add Core Components
     When add core text component
     Then the text component should be created in the root project
 
+  Scenario: AddCoreComponents should add an image component with the correct editConfig
+    Given a standalone content-package project
+    When add core image component
+    Then the image component should be created in the root project
+    Then the image component in the root project should have the correct editConfig
+
   Scenario: AddCoreComponents should not do anything to a bundle project
     Given a standalone bundle project
     When add core text component

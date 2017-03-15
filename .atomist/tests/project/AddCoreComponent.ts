@@ -16,7 +16,7 @@
 import { Project } from "@atomist/rug/model/Project";
 import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/project/Core";
 import { Result } from "@atomist/rug/test/Result";
-import { addCommonSteps } from "./TestHelpers"
+import { addCommonSteps, getAttributeValue } from "./TestHelpers"
 
 addCommonSteps();
 
@@ -27,6 +27,16 @@ When("add core text component", (project: Project, world: ProjectScenarioWorld) 
         component_group: "My Project",
         core_component_name: "text",
         component_title: "My Text"
+    });
+});
+
+When("add core image component", (project: Project, world: ProjectScenarioWorld) => {
+    let editor = world.editor("AddCoreComponent");
+    world.editWith(editor, {
+        component_folder_name: "/apps/test/components/content",
+        component_group: "My Project",
+        core_component_name: "image",
+        component_title: "My Image"
     });
 });
 
@@ -47,7 +57,44 @@ Then("the text component should not be created in the uiconfig project", (projec
     }
 });
 
+Then("the image component should be created in the root project", (project: Project, world: ProjectScenarioWorld): Result => {
+    return checkImageComponent(project, "src/main/content/jcr_root/apps/test/components/content/myImage/.content.xml");
+});
+
+
+Then("the image component in the root project should have the correct editConfig", (project: Project, world: ProjectScenarioWorld): Result => {
+    let file = project.findFile("src/main/content/jcr_root/apps/test/components/content/myImage/.content.xml");
+    let value = getAttributeValue(file, "/jcr:root/cq:dropTargets/image/parameters/@sling:resourceType");
+
+    if ("test/components/content/components/image" === value) {
+        return Result.Success;
+    } else {
+        return Result.Failure(`unexpected resourceType in cq:EditConfig: ${value}`);
+    }
+});
+
 function checkTextComponent(project: Project, path: string) : Result {
+    if (project.fileExists(path)) {
+        let fileContent = project.findFile(path).content();
+        let expected = `<?xml version="1.0" encoding="UTF-8"?>is t
+<jcr:root
+    xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Component"
+    componentGroup="My Project"
+    sling:resourceSuperType="core/wcm/components/text/v1/text"
+    jcr:title="My Text"/>`;
+        if (fileContent === expected) {
+            return Result.Success;
+        } else {
+            return Result.Failure(`Unexpected content in .content.xml: !${project.findFile(path).content()}! Expected: !${expected}!`);
+        }
+    } else {
+        return Result.Failure("no component exists at the correct path");
+    }
+}
+
+function checkImageComponent(project: Project, path: string) : Result {
     if (project.fileExists(path)) {
         let fileContent = project.findFile(path).content();
         let expected = `<?xml version="1.0" encoding="UTF-8"?>
@@ -56,8 +103,8 @@ function checkTextComponent(project: Project, path: string) : Result {
     xmlns:jcr="http://www.jcp.org/jcr/1.0"
     jcr:primaryType="cq:Component"
     componentGroup="My Project"
-    sling:resourceSuperType="core/wcm/components/text/v1/text"
-    jcr:title="My Text"/>`;
+    sling:resourceSuperType="core/wcm/components/image/v1/image"
+    jcr:title="My Image"/>`;
         if (fileContent === expected) {
             return Result.Success;
         } else {
