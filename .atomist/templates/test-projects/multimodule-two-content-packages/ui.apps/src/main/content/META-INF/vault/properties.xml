@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<properties version="1.0">
+    <comment>FileVault Package Properties</comment>
+    <entry key="buildCount">1</entry>
+    <entry key="version">0.0.1-SNAPSHOT</entry>
+    <entry key="dependencies"/>
+    <entry key="packageFormatVersion">2</entry>
+    <entry key="description">multimodule Content Package</entry>
+    <entry key="group">my-packages</entry>
+    <entry key="name">multimodule</entry>
+    <entry key="path">/etc/packages/my-packages/multimodule-0.0.1-SNAPSHOT.zip</entry>
+</properties>
