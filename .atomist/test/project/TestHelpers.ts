@@ -13,11 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Pom } from "@atomist/rug/model/Pom"
+import { Pom } from "@atomist/rug/model/Pom";
 import { Result } from "@atomist/rug/test/Result";
+import { Project } from "@atomist/rug/model/Project";
+import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/project/Core";
 import { DOMParser } from 'xmldom'
 
 export function countDependenciesInDependencyManagement(pom: Pom): number {
     let doc = new DOMParser().parseFromString(pom.content(), "text/xml");
     return doc.getElementsByTagName("dependencyManagement")[0].getElementsByTagName("dependency").length;
+}
+
+export function addCommonSteps() {
+    Given("a simple multimodule project", (project: Project, world: ProjectScenarioWorld) => {
+        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule", "");
+    });
+
+    Given("a multimodule project with two content packages", (project: Project, world: ProjectScenarioWorld) => {
+        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule-two-content-packages", "");
+    });
+
+    Given("a standalone content-package project", (project: Project, world: ProjectScenarioWorld) => {
+        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/just-content-package", "");
+    });
+
+    Given("a standalone bundle project", (project: Project, world: ProjectScenarioWorld) => {
+        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/just-bundle", "");
+    });
+
+    Then("it should fail", (project: Project, world: ProjectScenarioWorld): boolean => {
+        return world.failed();
+    });
 }

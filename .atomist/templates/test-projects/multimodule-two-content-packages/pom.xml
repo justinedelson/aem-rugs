@@ -279,7 +279,7 @@
     </profiles>
     <modules>
         <module>core</module>
-        <module>ui.apps</module>
-        <module>ui.config</module>
+        <module>uiapps</module>
+        <module>uiconfig</module>
     </modules>
 </project>

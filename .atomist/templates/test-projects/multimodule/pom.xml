@@ -279,6 +279,6 @@
     </profiles>
     <modules>
         <module>core</module>
-        <module>ui.apps</module>
+        <module>uiapps</module>
     </modules>
 </project>
