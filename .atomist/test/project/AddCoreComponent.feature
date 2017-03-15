@@ -21,13 +21,13 @@ Feature: Add Core Components
   Scenario: AddCoreComponents should add a text component to a multimodule project
     Given a simple multimodule project
     When add core text component
-    Then the text component should be created in the ui.apps project
+    Then the text component should be created in the uiapps project
 
   Scenario: AddCoreComponents should add a text component to a multimodule project with two content packages
     Given a multimodule project with two content packages
     When add core text component
-    Then the text component should be created in the ui.apps project
-    Then the text component should not be created in the config project
+    Then the text component should be created in the uiapps project
+    Then the text component should not be created in the uiconfig project
 
   Scenario: AddCoreComponents should add a text component to a standalone project
     Given a standalone content-package project

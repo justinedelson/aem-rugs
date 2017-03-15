@@ -22,14 +22,14 @@ Feature: Add HTL Maven Plugin
     Given a simple multimodule project
     When add HTL plugin
     Then the root project should have the HTL plugin in pluginManagement
-    Then the ui.apps project should be configured with the HTL plugin
+    Then the uiapps project should be configured with the HTL plugin
 
   Scenario: AddHtlMavenPlugin should add the plugin to a multimodule project with two content packages
     Given a multimodule project with two content packages
     When add HTL plugin
     Then the root project should have the HTL plugin in pluginManagement
-    Then the ui.apps project should be configured with the HTL plugin
-    Then the ui.config project should be configured with the HTL plugin
+    Then the uiapps project should be configured with the HTL plugin
+    Then the uiconfig project should be configured with the HTL plugin
 
   Scenario: AddHtlMavenPlugin should add the plugin component to a standalone project
     Given a standalone content-package project

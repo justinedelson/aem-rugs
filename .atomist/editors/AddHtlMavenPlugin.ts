@@ -20,7 +20,7 @@ import { Pom } from '@atomist/rug/model/Pom'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
-import { addOrReplaceBuildPluginManagementPlugin, addPluginManagementIfNotPresent } from './EditorFunctions'
+import { addOrReplaceBuildPluginManagementPlugin } from './EditorFunctions'
 
 const pluginGroupId = "org.apache.sling";
 const pluginArtifactId = "htl-maven-plugin";
@@ -64,7 +64,6 @@ export class AddHtlMavenPlugin implements EditProject {
 }
 
 function addPluginManagement(pom: Pom) {
-    addPluginManagementIfNotPresent(pom);
     addOrReplaceBuildPluginManagementPlugin(pom, pluginGroupId, pluginArtifactId, `<plugin>
                     <groupId>${pluginGroupId}</groupId>
                     <artifactId>${pluginArtifactId}</artifactId>

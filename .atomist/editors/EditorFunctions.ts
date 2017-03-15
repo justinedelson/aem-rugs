@@ -75,6 +75,7 @@ export function createNodeNameFromTitle(title: string) : string {
 }
 
 export function addOrReplaceBuildPluginManagementPlugin(pom: Pom, groupId: string, artifactId: string, pluginContent: string) {
+    addPluginManagementIfNotPresent(pom);
     pom.addOrReplaceNode("/project/build/pluginManagement/plugins",
         `/project/build/pluginManagement/plugins/plugin/artifactId [text()='${artifactId}' and ../groupId [text() = '${groupId}']]/..`,
         "plugin",

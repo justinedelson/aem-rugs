@@ -30,7 +30,7 @@ When("add core text component", (project: Project, world: ProjectScenarioWorld) 
     });
 });
 
-Then("the text component should be created in the ui.apps project", (project: Project, world: ProjectScenarioWorld): Result => {
+Then("the text component should be created in the uiapps project", (project: Project, world: ProjectScenarioWorld): Result => {
     return checkTextComponent(project, "uiapps/src/main/content/jcr_root/apps/test/components/content/myText/.content.xml");
 });
 
@@ -38,7 +38,7 @@ Then("the text component should be created in the root project", (project: Proje
     return checkTextComponent(project, "src/main/content/jcr_root/apps/test/components/content/myText/.content.xml");
 });
 
-Then("the text component should not be created in the config project", (project: Project, world: ProjectScenarioWorld): Result => {
+Then("the text component should not be created in the uiconfig project", (project: Project, world: ProjectScenarioWorld): Result => {
     let path = "uiconfig/src/main/content/jcr_root/apps/test/components/content/myText/.content.xml";
     if (project.fileExists(path)) {
         return Result.Failure("Component created at the incorrect path");
