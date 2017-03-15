@@ -61,8 +61,5 @@ Then("there should be a correct root pom file for AEM 6.3", (project: Project, w
         return Result.Failure(`Incorrect number of dependencies in dependencyManagenent ${dependencyManagementCount}`);
     }
 
-    project.addFile("foo.txt", "hello");
-    console.log(world.modificationsMade());
-
     return Result.Success;
 });
