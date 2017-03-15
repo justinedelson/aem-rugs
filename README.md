@@ -68,6 +68,27 @@ $ rug edit com.adobe.people.jedelson:aem-rugs:AddCoreComponent component_folder_
     component_group="My Project" core_component_name=image component_title="My Image"
 ```
 
+### AddHtlPlugin
+
+Adds the [HTL Maven Plugin](http://sling.apache.org/components/htl-maven-plugin/) to the project.
+
+#### Prerequisites
+
+There must be a content package project under the current directory.
+
+#### Parameters
+
+This Rug takes no parameters.
+
+#### Running
+
+Run this Rug as follows:
+
+```
+$ cd parent/directory
+$ rug edit com.adobe.people.jedelson:aem-rugs:AddHtlPlugin
+```
+
 
 ## Development
 
