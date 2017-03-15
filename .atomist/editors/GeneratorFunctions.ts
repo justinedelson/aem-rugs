@@ -29,7 +29,8 @@ import {Dependency} from "./Dependency";
 export function removeUnnecessaryFiles(project: Project, extraFiles?: string[], extraDirectories?: string[]): void {
     let filesToRemove: string[] = [
         ".atomist.yml",
-        ".travis.yml"
+        ".travis.yml",
+        ".gitignore"
     ];
     if (extraFiles != null) {
         filesToRemove = filesToRemove.concat(extraFiles);
