@@ -29,7 +29,7 @@ Feature: Add Core Components
     Then the text component should be created in the ui.apps project
     Then the text component should not be created in the config project
 
-  Scenario: AddCoreComponents should add a text component to a multimodule project
+  Scenario: AddCoreComponents should add a text component to a standalone project
     Given a standalone content-package project
     When add core text component
     Then the text component should be created in the root project
