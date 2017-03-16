@@ -28,7 +28,6 @@ const appsFolderName = "test";
 When("generate with CreateAemMultimoduleProject for AEM 6.3", (project: Project, world: ProjectScenarioWorld) => {
     let generator = world.generator("CreateAemMultimoduleProject")
     world.generateWith(generator, {
-        project_name: projectName,
         group_id: groupId,
         content_package_group: contentPackageGroup,
         apps_folder_name: appsFolderName,

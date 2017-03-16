@@ -40,16 +40,6 @@ export class CreateAemMultimoduleProject implements PopulateProject {
     group_id: string;
 
     @Parameter({
-        displayName: "Project Name",
-        description: "a Name for your Project",
-        pattern: Pattern.any,
-        validInput: "a Project Name",
-        minLength: 1,
-        maxLength: 100
-    })
-    project_name: string;
-
-    @Parameter({
         displayName: "Content Package Group",
         description: "a Group for your Package when it is installed in the AEM Package Manager",
         pattern: Pattern.any,
