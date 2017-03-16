@@ -37,6 +37,12 @@ Feature: Add HTL Maven Plugin
     Then the root project should have the HTL plugin in pluginManagement
     Then the root project should be configured with the HTL plugin
 
+  Scenario: AddHtlMavenPlugin should add the plugin to a multimodule project with a separate parent
+    Given a multimodule project with a separate parent
+    When add HTL plugin
+    Then the parent project should have the HTL plugin in pluginManagement
+    Then the uiapps project should be configured with the HTL plugin
+
   Scenario: AddHtlMavenPlugin should not do anything to a bundle project
     Given a standalone bundle project
     When add HTL plugin

@@ -86,6 +86,36 @@ export function addPluginManagementIfNotPresent(pom: Pom) {
     pom.addNodeIfNotPresent("/project/build", "/project/build/pluginManagement", "pluginManagement", "<pluginManagement><plugins></plugins></pluginManagement>");
 }
 
+export function editMatchingProjectsAndParents(root: Project, matchF: (pom: Pom) => boolean,
+                                       projectF: (pom: Pom) => void, parentF: (pom: Pom) => void): void {
+    // first, find all of the projects and all of the projects matching
+    let allProjects: { [key:string]:Pom; } = { };
+    let allMatchingProjects: Pom[] = [];
+
+    let eng: PathExpressionEngine = root.context().pathExpressionEngine();
+    eng.with<EveryPom>(root, "/EveryPom()", pom => {
+        let key: string = pom.groupId() + ":" + pom.artifactId();
+        allProjects[key] = pom;
+        if (matchF(pom)) {
+            allMatchingProjects.push(pom);
+        }
+    });
+
+    // now go through the matched projects and call the project function
+    for (let pom of allMatchingProjects) {
+        projectF(pom);
+
+        // then call the parent function
+        let parentKey = pom.parentGroupId() + ":" + pom.parentArtifactId();
+        let parentPom = allProjects[parentKey];
+        if (parentPom != null) {
+            parentF(parentPom);
+        } else {
+            parentF(pom);
+        }
+    }
+}
+
 function findDefinitionFilter(documentElement) : any {
     for (let child of documentElement.childNodes) {
         if (child.nodeName === "filter") {
