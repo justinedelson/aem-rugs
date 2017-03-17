@@ -27,7 +27,7 @@ const appsFolderName = "test";
 
 When("generate with CreateAemMultimoduleProject for AEM 6.3", (project: Project, world: ProjectScenarioWorld) => {
     let generator = world.generator("CreateAemMultimoduleProject")
-    world.generateWith(generator, {
+    world.generateWith(generator, projectName, {
         group_id: groupId,
         content_package_group: contentPackageGroup,
         apps_folder_name: appsFolderName,
@@ -50,8 +50,7 @@ Then("there should be a correct root pom file for AEM 6.3", (project: Project, w
         return Result.Failure(`Incorrect groupId: ${pom.groupId()}`);
     }
 
-    // TODO - this looks like a bug where the projet name is always "project_name"
-    if (pom.artifactId() !== "project_name") {
+    if (pom.artifactId() !== projectName) {
         return Result.Failure(`Incorrect artifactId: ${pom.artifactId()}`);
     }
 

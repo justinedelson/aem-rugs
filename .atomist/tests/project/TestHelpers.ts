@@ -57,8 +57,4 @@ export function addCommonSteps() {
     Given("a multimodule project with a separate parent", (project, world) => {
         project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule-with-separate-parent", "");
     });
-
-    Then("it should fail", (project: Project, world: ProjectScenarioWorld): boolean => {
-        return world.failed();
-    });
 }

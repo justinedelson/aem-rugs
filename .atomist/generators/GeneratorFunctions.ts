@@ -16,8 +16,8 @@
 import { Project } from '@atomist/rug/model/Project'
 import { Xml } from '@atomist/rug/model/Xml'
 import { Pom } from '@atomist/rug/model/Pom'
-import { Dependencies } from './Constants'
-import {Dependency} from "./Dependency";
+import { Dependencies } from './../editors/Constants'
+import {Dependency} from "./../editors/Dependency";
 
 /**
  * Remove files in this project that do not belong in the generated

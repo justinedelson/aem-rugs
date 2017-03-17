@@ -22,8 +22,8 @@ import { File } from '@atomist/rug/model/File'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Xml } from '@atomist/rug/model/Xml'
 import { removeUnnecessaryFiles, setProperty, addDependencyManagement, addContentPackageDependencies, addBundleDependencies } from './GeneratorFunctions'
-import { addFilterEntry, addFilterEntryToDefinition } from "./EditorFunctions"
-import { XPaths } from "./Constants"
+import { addFilterEntry, addFilterEntryToDefinition } from "./../editors/EditorFunctions"
+import { XPaths } from "./../editors/Constants"
 
 @Generator("CreateAemMultimoduleProject", "Create a skeletal AEM project")
 @Tags("documentation")
