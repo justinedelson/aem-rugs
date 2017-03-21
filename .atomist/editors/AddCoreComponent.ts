@@ -44,7 +44,7 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "Component folder",
-        description: "a folder (relative to /apps) into which the proxy component will be created.",
+        description: "a folder (relative to /apps) into which the proxy component will be created",
         pattern: AemPattern.relativeFolder,
         validInput: "a folder name relative to /apps",
         minLength: 1,

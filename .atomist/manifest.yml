@@ -1,4 +1,4 @@
 group: "aem-rugs"
 artifact: "aem-rugs"
-version: "0.2.1"
+version: "0.2.2"
 requires: "0.17.1"
