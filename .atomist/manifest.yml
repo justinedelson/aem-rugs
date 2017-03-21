@@ -1,4 +1,4 @@
-group: "com.adobe.people.jedelson"
+group: "aem-rugs"
 artifact: "aem-rugs"
 version: "0.1.0"
 requires: "0.17.1"
