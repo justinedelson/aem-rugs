@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@atomist/rug": "0.15.0",
+    "@atomist/rug": "0.17.1",
     "xmldom": "^0.1.27",
     "xpath.js": "^1.0.7"
   }
