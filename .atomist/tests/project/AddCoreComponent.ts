@@ -26,7 +26,7 @@ addCommonSteps();
 When("add core text component", (project: Project, world: ProjectScenarioWorld) => {
     let editor = world.editor("AddCoreComponent");
     world.editWith(editor, {
-        component_folder_name: "/apps/test/components/content",
+        component_folder_name: "test/components/content",
         component_group: "My Project",
         core_component_name: "text",
         component_title: "My Text"
@@ -36,7 +36,7 @@ When("add core text component", (project: Project, world: ProjectScenarioWorld) 
 When("add core image component", (project: Project, world: ProjectScenarioWorld) => {
     let editor = world.editor("AddCoreComponent");
     world.editWith(editor, {
-        component_folder_name: "/apps/test/components/content",
+        component_folder_name: "test/components/content",
         component_group: "My Project",
         core_component_name: "image",
         component_title: "My Image"

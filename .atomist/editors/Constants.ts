@@ -45,6 +45,6 @@ export abstract class Dependencies {
 
 export abstract class AemPattern {
     public static componentGroup: string = "^[a-zA-Z][-\\w. ]+$";
-    public static appsFolder: string = "^\\/apps\\/[-\\w\\/]+$";
+    public static relativeFolder: string = "^[\\w]+[-\\w\\/]+$";
 
 }

@@ -44,9 +44,9 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "Component folder",
-        description: "a folder (beginning with /apps) into which the proxy component will be created.",
-        pattern: AemPattern.appsFolder,
-        validInput: "a folder name under /apps",
+        description: "a folder (relative to /apps) into which the proxy component will be created.",
+        pattern: AemPattern.relativeFolder,
+        validInput: "a folder name relative to /apps",
         minLength: 1,
         maxLength: 200
     })
@@ -83,13 +83,14 @@ export class AddCoreComponent implements EditProject {
     component_title: string;
 
     edit(project: Project) {
-        let jcrRootPath : string = findContentPackageFolderWithFilterCovering(project, this.component_folder_name);
+        let absoluteComponentFolderName = "/apps/" + this.component_folder_name;
+        let jcrRootPath : string = findContentPackageFolderWithFilterCovering(project, absoluteComponentFolderName);
         if (!jcrRootPath) {
-            project.fail(`Could not find content package project with filter convering '${this.component_folder_name}'.`);
+            project.fail(`Could not find content package project with filter covering '${absoluteComponentFolderName}'.`);
             return;
         }
         let componentName = createNodeNameFromTitle(this.component_title);
-        let componentPath = `${this.component_folder_name}/${componentName}`;
+        let componentPath = `${absoluteComponentFolderName}/${componentName}`;
         let relativeComponentPath = componentPath.substring(6);
         let componentFolder = `${jcrRootPath}${componentPath}`
         project.addFile(componentFolder + "/.content.xml", `<?xml version="1.0" encoding="UTF-8"?>
