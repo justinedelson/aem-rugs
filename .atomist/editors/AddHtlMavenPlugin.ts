@@ -24,7 +24,7 @@ const pluginArtifactId = "htl-maven-plugin";
 const pluginVersion = "1.0.6";
 
 @Editor("AddHtlMavenPlugin", "Adds the HTL Maven Plugin to Content Package projects")
-@Tags("documentation")
+@Tags("adobe", "aem")
 export class AddHtlMavenPlugin implements EditProject {
 
     edit(project: Project) {

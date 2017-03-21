@@ -39,7 +39,7 @@ let coreComponentBundleVersion = "1.0.0";
 
 
 @Editor("AddCoreComponent", "Add a proxy component for one of the core components to an AEM project.")
-@Tags("documentation")
+@Tags("adobe", "aem")
 export class AddCoreComponent implements EditProject {
 
     @Parameter({

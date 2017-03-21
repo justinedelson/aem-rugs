@@ -26,7 +26,7 @@ import { addFilterEntry, addFilterEntryToDefinition } from "./../editors/EditorF
 import { XPaths } from "./../editors/Constants"
 
 @Generator("CreateAemMultimoduleProject", "Create a skeletal AEM project")
-@Tags("documentation")
+@Tags("adobe", "aem")
 export class CreateAemMultimoduleProject implements PopulateProject {
 
     @Parameter({
