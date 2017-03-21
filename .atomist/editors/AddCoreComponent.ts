@@ -64,9 +64,9 @@ export class AddCoreComponent implements EditProject {
 
     @Parameter({
         displayName: "Core component name",
-        description: `the core component name (one of ${Object.keys(componentMappings).join(", ")}`,
+        description: `the core component name (one of ${Object.keys(componentMappings).join(", ")})`,
         pattern: "^" + Object.keys(componentMappings).join(("|")) + "$",
-        validInput: `a component name (one of ${Object.keys(componentMappings).join(", ")}`,
+        validInput: `a component name (one of ${Object.keys(componentMappings).join(", ")})`,
         minLength: 1,
         maxLength: 30
     })
