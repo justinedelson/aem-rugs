@@ -26,7 +26,7 @@ export function addFilterEntry(filterXml : Xml, path : string) : void {
 }
 
 export function addFilterEntryToDefinition(definitionXml : File, path : string) : void {
-    let doc = new DOMParser().parseFromString(definitionXml.content(), "text/xml");
+    let doc = new DOMParser().parseFromString(definitionXml.content, "text/xml");
     let filterElement = findDefinitionFilter(doc.documentElement);
     if (filterElement) {
         let filterCount = countChildNodes(filterElement);
@@ -45,22 +45,22 @@ export function addFilterEntryToDefinition(definitionXml : File, path : string) 
 }
 
 export function findContentPackageFolderWithFilterCovering(project : Project, path: string) : string {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let result: string;
 
     eng.with<EveryPom>(project, "/EveryPom()", pom => {
         if (pom.packaging() === "content-package") {
-            let basePath = pom.path().substring(0, pom.path().lastIndexOf("/"));
+            let basePath = pom.path.substring(0, pom.path.lastIndexOf("/"));
             eng.with<Xml>(project, "/Xml()", xml => {
-                let tailMatch = xml.path().match("META\-INF/vault/filter\.xml$");
+                let tailMatch = xml.path.match("META\-INF/vault/filter\.xml$");
                 if (tailMatch && xml.underPath(basePath)) {
-                    let doc = new DOMParser().parseFromString(xml.content(), "text/xml");
+                    let doc = new DOMParser().parseFromString(xml.content, "text/xml");
                     let filters = doc.getElementsByTagName("filter");
                     for (let filter of filters) {
                         let root = filter.getAttribute("root").toString();
                         // TODO - deal with includes/excludes
                         if (path.indexOf(root) == 0) {
-                            result = xml.path().substring(0, tailMatch.index) + "jcr_root";
+                            result = xml.path.substring(0, tailMatch.index) + "jcr_root";
                         }
                     }
                 }
@@ -92,7 +92,7 @@ export function editMatchingProjectsAndParents(root: Project, matchF: (pom: Pom)
     let allProjects: { [key:string]:Pom; } = { };
     let allMatchingProjects: Pom[] = [];
 
-    let eng: PathExpressionEngine = root.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = root.context.pathExpressionEngine;
     eng.with<EveryPom>(root, "/EveryPom()", pom => {
         let key: string = pom.groupId() + ":" + pom.artifactId();
         allProjects[key] = pom;

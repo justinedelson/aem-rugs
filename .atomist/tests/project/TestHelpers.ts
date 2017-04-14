@@ -22,12 +22,12 @@ import { DOMParser } from 'xmldom';
 import * as xpathSelect from 'xpath.js';
 
 export function countDependenciesInDependencyManagement(pom: Pom): number {
-    let doc = new DOMParser().parseFromString(pom.content(), "text/xml");
+    let doc = new DOMParser().parseFromString(pom.content, "text/xml");
     return doc.getElementsByTagName("dependencyManagement")[0].getElementsByTagName("dependency").length;
 }
 
 export function getAttributeValue(file: File, xpath: string): string {
-    let doc = new DOMParser().parseFromString(file.content());
+    let doc = new DOMParser().parseFromString(file.content);
     let xpathResult = xpathSelect(doc, xpath);
 
     if (xpathResult.length == 1) {

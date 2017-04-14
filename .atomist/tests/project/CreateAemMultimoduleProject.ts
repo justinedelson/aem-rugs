@@ -36,14 +36,14 @@ When("generate with CreateAemMultimoduleProject for AEM 6.3", (project: Project,
 });
 
 Then("there should be a correct root pom file for AEM 6.3", (project: Project, world: ProjectScenarioWorld) => {
-    let eng = project.context().pathExpressionEngine();
+    let eng = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project, Pom>("/Pom()"));
     if (!pom) {
         return Result.Failure("No pom.xml in root");
     }
 
-    if (pom.content().indexOf("REPLACE") > -1) {
-        return Result.Failure(`Expected 'REPLACE' in root pom. ${pom.content()}`);
+    if (pom.content.indexOf("REPLACE") > -1) {
+        return Result.Failure(`Expected 'REPLACE' in root pom. ${pom.content}`);
     }
 
     if (pom.groupId() !== groupId) {

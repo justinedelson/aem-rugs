@@ -92,7 +92,7 @@ export class AddCoreComponent implements EditProject {
         let componentName = createNodeNameFromTitle(this.component_title);
         let componentPath = `${absoluteComponentFolderName}/${componentName}`;
         let relativeComponentPath = componentPath.substring(6);
-        let componentFolder = `${jcrRootPath}${componentPath}`
+        let componentFolder = `${jcrRootPath}${componentPath}`;
         project.addFile(componentFolder + "/.content.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root
     xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
@@ -112,7 +112,7 @@ export class AddCoreComponent implements EditProject {
         }, pom => {
             pom.addOrReplaceDependency(coreComponentBundleGroupId, coreComponentBundleArtifactId);
         }, pom => {
-            console.log("add/replace dependencyManagement in " + pom.path());
+            console.log("add/replace dependencyManagement in " + pom.path);
             pom.addOrReplaceDependencyManagementDependency(coreComponentBundleGroupId, coreComponentBundleArtifactId, `<dependency>
             <groupId>${coreComponentBundleGroupId}</groupId>
             <artifactId>${coreComponentBundleArtifactId}</artifactId>

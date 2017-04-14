@@ -77,32 +77,32 @@ Then("the image component in the root project should have the correct editConfig
 });
 
 Then("the core component bundle should be added to the core project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/core/*[@name='pom.xml']/Pom()"));
     return pom.isDependencyPresent("com.adobe.cq", "core.wcm.components.core");
 });
 
 Then("the core component bundle should be added to the root project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/Pom()"));
     return pom.isDependencyPresent("com.adobe.cq", "core.wcm.components.core");
 });
 
 Then("the core component bundle should be managed in the root project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/Pom()"));
     return pom.isDependencyManagementDependencyPresent("com.adobe.cq", "core.wcm.components.core");
 });
 
 Then("the core component bundle should be managed in the parent project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/parent/*[@name='pom.xml']/Pom()"));
     return pom.isDependencyManagementDependencyPresent("com.adobe.cq", "core.wcm.components.core");
 });
 
 function checkTextComponent(project: Project, path: string) : Result {
     if (project.fileExists(path)) {
-        let fileContent = project.findFile(path).content();
+        let fileContent = project.findFile(path).content;
         let expected = `<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root
     xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
@@ -114,7 +114,7 @@ function checkTextComponent(project: Project, path: string) : Result {
         if (fileContent === expected) {
             return Result.Success;
         } else {
-            return Result.Failure(`Unexpected content in .content.xml: !${project.findFile(path).content()}! Expected: !${expected}!`);
+            return Result.Failure(`Unexpected content in .content.xml: !${project.findFile(path).content}! Expected: !${expected}!`);
         }
     } else {
         return Result.Failure("no component exists at the correct path");
@@ -123,7 +123,7 @@ function checkTextComponent(project: Project, path: string) : Result {
 
 function checkImageComponent(project: Project, path: string) : Result {
     if (project.fileExists(path)) {
-        let fileContent = project.findFile(path).content();
+        let fileContent = project.findFile(path).content;
         let expected = `<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root
     xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
@@ -135,7 +135,7 @@ function checkImageComponent(project: Project, path: string) : Result {
         if (fileContent === expected) {
             return Result.Success;
         } else {
-            return Result.Failure(`Unexpected content in .content.xml: !${project.findFile(path).content()}! Expected: !${expected}!`);
+            return Result.Failure(`Unexpected content in .content.xml: !${project.findFile(path).content}! Expected: !${expected}!`);
         }
     } else {
         return Result.Failure("no component exists at the correct path");

@@ -30,31 +30,31 @@ When("add HTL plugin", (project: Project, world: ProjectScenarioWorld) => {
 });
 
 Then("the root project should have the HTL plugin in pluginManagement", (project: Project, world: ProjectScenarioWorld): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/Pom()"));
     return pom.contains("/project/build/pluginManagement/plugins/plugin/artifactId [text()='htl-maven-plugin' and ../groupId [text() = 'org.apache.sling']]/..");
 });
 
 Then("the parent project should have the HTL plugin in pluginManagement", (project: Project, world: ProjectScenarioWorld): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/parent/*[@name='pom.xml']/Pom()"));
     return pom.contains("/project/build/pluginManagement/plugins/plugin/artifactId [text()='htl-maven-plugin' and ../groupId [text() = 'org.apache.sling']]/..");
 });
 
 Then("the uiapps project should be configured with the HTL plugin", (project: Project, world: ProjectScenarioWorld): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/uiapps/*[@name='pom.xml']/Pom()"));
     return pom.contains("/project/build/plugins/plugin/artifactId [text()='htl-maven-plugin' and ../groupId [text() = 'org.apache.sling']]/..");
 });
 
 Then("the uiconfig project should be configured with the HTL plugin", (project: Project, world: ProjectScenarioWorld): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/uiconfig/*[@name='pom.xml']/Pom()"));
     return pom.contains("/project/build/plugins/plugin/artifactId [text()='htl-maven-plugin' and ../groupId [text() = 'org.apache.sling']]/..");
 });
 
 Then("the root project should be configured with the HTL plugin", (project: Project, world: ProjectScenarioWorld): boolean => {
-    let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
     let pom = eng.scalar(project, new PathExpression<Project,Pom>("/Pom()"));
     return pom.contains("/project/build/plugins/plugin/artifactId [text()='htl-maven-plugin' and ../groupId [text() = 'org.apache.sling']]/..");
 });

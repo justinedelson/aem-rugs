@@ -76,36 +76,36 @@ export class CreateAemMultimoduleProject implements PopulateProject {
     updateReadme(project: Project) {
         console.log("Updating README.md");
 
-        let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+        let eng: PathExpressionEngine = project.context.pathExpressionEngine;
         let readMePE = new PathExpression<Project, File>("/*[@name='README.md']");
         let readMe: File = eng.scalar(project, readMePE);
-        readMe.replace("${projectName}", project.name());
+        readMe.replace("${projectName}", project.name);
     }
 
     updatePoms(project: Project) {
         console.log("Updating POM files");
-        let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+        let eng: PathExpressionEngine = project.context.pathExpressionEngine;
         eng.with<Pom>(project, "/Pom()", pom => {
-            pom.setArtifactId(project.name());
+            pom.setArtifactId(project.name);
             pom.setGroupId(this.group_id);
             pom.setVersion(this.version);
-            pom.setProjectName(`${project.name()} - Reactor Project`);
-            pom.setDescription(`Maven Multimodule project for ${project.name()}.`);
+            pom.setProjectName(`${project.name} - Reactor Project`);
+            pom.setDescription(`Maven Multimodule project for ${project.name}.`);
             addDependencyManagement(this.aem_version, pom);
         });
         eng.with<Pom>(project, "/*/*[@name='pom.xml']/Pom()", pom => {
-            pom.setParentArtifactId(project.name());
+            pom.setParentArtifactId(project.name);
             pom.setParentGroupId(this.group_id);
             pom.setParentVersion(this.version);
             if (pom.packaging() === "bundle") {
                 pom.setArtifactId(this.bundleArtifactId);
-                pom.setProjectName(`${project.name()} Bundle`);
-                pom.setTextContentFor(XPaths.bsn, `${this.group_id}.${project.name()}`);
+                pom.setProjectName(`${project.name} Bundle`);
+                pom.setTextContentFor(XPaths.bsn, `${this.group_id}.${project.name}`);
                 pom.setTextContentFor(XPaths.slingInstallUrl, `http://\${aem.host}:\${aem.port}/apps/${this.apps_folder_name}/install`);
                 addBundleDependencies(this.aem_version, pom);
             } else if (pom.packaging() === "content-package") {
                 pom.setArtifactId(this.contentArtifactId);
-                pom.setProjectName(`${project.name()} Content Package`);
+                pom.setProjectName(`${project.name} Content Package`);
                 pom.addOrReplaceDependencyOfVersion(this.group_id, this.bundleArtifactId, "${project.version}");
                 addContentPackageDependencies(this.aem_version, pom);
                 pom.addChildNode(XPaths.embeddeds, "embedded", `<embedded>
@@ -120,34 +120,34 @@ export class CreateAemMultimoduleProject implements PopulateProject {
 
     updateVaultFiles(project: Project) {
         console.log("Updating Vault files");
-        let eng: PathExpressionEngine = project.context().pathExpressionEngine();
+        let eng: PathExpressionEngine = project.context.pathExpressionEngine;
         // TODO - figure out how to properly form the path expression
         eng.with<Xml>(project, "/Xml()", xml => {
-            if (xml.path() === "ui.apps/src/main/content/META-INF/vault/properties.xml") {
+            if (xml.path === "ui.apps/src/main/content/META-INF/vault/properties.xml") {
                 setProperty(xml, 'version', this.version);
-                setProperty(xml, 'description', `${project.name()} Content Package`);
+                setProperty(xml, 'description', `${project.name} Content Package`);
                 setProperty(xml, 'group', this.content_package_group);
-                setProperty(xml, 'name', project.name());
-                setProperty(xml, 'path', `/etc/packages/${this.content_package_group}/${project.name()}-${this.version}.zip`);
-            } else if (xml.path() === "ui.apps/src/main/content/META-INF/vault/filter.xml") {
+                setProperty(xml, 'name', project.name);
+                setProperty(xml, 'path', `/etc/packages/${this.content_package_group}/${project.name}-${this.version}.zip`);
+            } else if (xml.path === "ui.apps/src/main/content/META-INF/vault/filter.xml") {
                 addFilterEntry(xml, `/apps/${this.apps_folder_name}`);
             }
         });
         eng.with<File>(project, "//definition/*[@name='.content.xml']", file => {
             file.replace('cqVersion="REPLACE"', `cqVersion="${this.aem_version}"`);
             file.replace('group="REPLACE"', `group="${this.content_package_group}"`);
-            file.replace('name="REPLACE"', `name="${project.name()}"`);
-            file.replace('path="REPLACE"', `path="/etc/packages/${this.content_package_group}/${project.name()}-${this.version}"`);
+            file.replace('name="REPLACE"', `name="${project.name}"`);
+            file.replace('path="REPLACE"', `path="/etc/packages/${this.content_package_group}/${project.name}-${this.version}"`);
             file.replace('version="REPLACE"', `version="${this.version}"`);
             addFilterEntryToDefinition(file, `/apps/${this.apps_folder_name}`);
         });
     }
 
     populate(project: Project) {
-        console.log(`Creating ${project.name()}`);
+        console.log(`Creating ${project.name}`);
 
-        this.bundleArtifactId = `${project.name()}.core`;
-        this.contentArtifactId = `${project.name()}.ui.apps`;
+        this.bundleArtifactId = `${project.name}.core`;
+        this.contentArtifactId = `${project.name}.ui.apps`;
 
         removeUnnecessaryFiles(project, [ "NOTICE", "LICENSE", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "README.md" ]);
         project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/multimodule-project", "");
