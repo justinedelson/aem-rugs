@@ -40,7 +40,8 @@ export function removeUnnecessaryFiles(project: Project, extraFiles?: string[], 
     }
 
     let directoriesToRemove: string[] = [
-        ".idea"
+        ".idea",
+        "META-INF"
     ];
     if (extraDirectories != null) {
         directoriesToRemove = directoriesToRemove.concat(extraDirectories);
