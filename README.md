@@ -123,7 +123,7 @@ Run this Rug as follows:
 
 ```
 $ cd parent/directory
-$ rug edit aem-rugs:aem-rugs:UseJava8
+$ rug edit aem-rugs:aem-rugs:UseOsgiDSAnnotations
 ```
 
 
