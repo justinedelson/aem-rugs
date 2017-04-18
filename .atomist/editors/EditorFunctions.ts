@@ -20,6 +20,7 @@ import { Project } from '@atomist/rug/model/Project'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { DOMParser } from 'xmldom'
+import { gt as semverGt} from 'semver'
 
 export function addFilterEntry(filterXml : Xml, path : string) : void {
     filterXml.addChildNode("/workspaceFilter", "filter", `<filter root="${path}"/>`);
@@ -72,6 +73,32 @@ export function findContentPackageFolderWithFilterCovering(project : Project, pa
 
 export function createNodeNameFromTitle(title: string) : string {
     return camelCase(title);
+}
+
+export function removeDependencyManagementDependency(pom: Pom, groupId: string, artifactId: string) {
+    pom.deleteNode(`/project/dependencyManagement/dependencies/dependency/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/..`);
+}
+
+export function removeBuildPlugin(pom: Pom, groupId: string, artifactId: string) {
+    pom.deleteNode(`/project/build/plugins/plugin/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/..`);
+}
+
+export function removeBuildPluginManagementPlugin(pom: Pom, groupId: string, artifactId: string) {
+    pom.deleteNode(`/project/build/pluginManagement/plugins/plugin/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/..`);
+}
+
+export function updateBuildPluginVersionIfNecessary(pom: Pom, groupId: string, artifactId: string, newVersion: string)  {
+    let currentVersionStr = pom.getTextContentFor(`/project/build/plugins/plugin/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/../version`);
+    if (currentVersionStr && semverGt(newVersion, currentVersionStr)) {
+        pom.setTextContentFor(`/project/build/plugins/plugin/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/../version`, newVersion);
+    }
+}
+
+export function updateBuildPluginManagementPluginVersionIfNecessary(pom: Pom, groupId: string, artifactId: string, newVersion: string) {
+    let currentVersionStr = pom.getTextContentFor(`/project/build/pluginManagement/plugins/plugin/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/../version`);
+    if (currentVersionStr && semverGt(newVersion, currentVersionStr)) {
+        pom.setTextContentFor(`/project/build/pluginManagement/plugins/plugin/artifactId[text()='${artifactId}' and ../groupId[text() = '${groupId}']]/../version`, newVersion);
+    }
 }
 
 export function editMatchingProjectsAndParents(root: Project, matchF: (pom: Pom) => boolean,
