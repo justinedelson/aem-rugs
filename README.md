@@ -33,7 +33,7 @@ Run this Rug as follows:
 
 ```
 $ cd parent/directory
-$ rug generate com.adobe.people.jedelson:aem-rugs:CreateAemMultimoduleProject \
+$ rug generate aem-rugs:aem-rugs:CreateAemMultimoduleProject \
     my-new-project group_id=com.test artifact_id=test-project \
     apps_folder_name=test content_package_group=my-packages aem_version=6.3
 ```
@@ -64,7 +64,7 @@ Run this Rug as follows:
 
 ```
 $ cd parent/directory
-$ rug edit com.adobe.people.jedelson:aem-rugs:AddCoreComponent component_folder_name=/apps/test/components/content \
+$ rug edit aem-rugs:aem-rugs:AddCoreComponent component_folder_name=/apps/test/components/content \
     component_group="My Project" core_component_name=image component_title="My Image"
 ```
 
@@ -86,7 +86,44 @@ Run this Rug as follows:
 
 ```
 $ cd parent/directory
-$ rug edit com.adobe.people.jedelson:aem-rugs:AddHtlPlugin
+$ rug edit aem-rugs:aem-rugs:AddHtlPlugin
+```
+
+### UseJava8
+
+Update the configuration of the Maven compiler plugin to use Java 8.
+
+#### Parameters
+
+This Rug takes no parameters.
+
+#### Running
+
+Run this Rug as follows:
+
+```
+$ cd parent/directory
+$ rug edit aem-rugs:aem-rugs:UseJava8
+```
+
+
+### UseOsgiDSAnnotations
+
+Update the project to use the standard OSGi Declarative Services annotations.
+
+> This rug does **not** update Java code, so it is likely that after running it, your build will be broken.
+
+#### Parameters
+
+This Rug takes no parameters.
+
+#### Running
+
+Run this Rug as follows:
+
+```
+$ cd parent/directory
+$ rug edit aem-rugs:aem-rugs:UseJava8
 ```
 
 
