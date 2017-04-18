@@ -74,18 +74,6 @@ export function createNodeNameFromTitle(title: string) : string {
     return camelCase(title);
 }
 
-export function addOrReplaceBuildPluginManagementPlugin(pom: Pom, groupId: string, artifactId: string, pluginContent: string) {
-    addPluginManagementIfNotPresent(pom);
-    pom.addOrReplaceNode("/project/build/pluginManagement/plugins",
-        `/project/build/pluginManagement/plugins/plugin/artifactId [text()='${artifactId}' and ../groupId [text() = '${groupId}']]/..`,
-        "plugin",
-        pluginContent);
-}
-
-export function addPluginManagementIfNotPresent(pom: Pom) {
-    pom.addNodeIfNotPresent("/project/build", "/project/build/pluginManagement", "pluginManagement", "<pluginManagement><plugins></plugins></pluginManagement>");
-}
-
 export function editMatchingProjectsAndParents(root: Project, matchF: (pom: Pom) => boolean,
                                        projectF: (pom: Pom) => void, parentF: (pom: Pom) => void): void {
     // first, find all of the projects and all of the projects matching

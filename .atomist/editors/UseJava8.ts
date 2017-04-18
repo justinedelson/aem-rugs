@@ -18,7 +18,7 @@ import { Project } from '@atomist/rug/model/Project'
 import { Pom } from '@atomist/rug/model/Pom'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
-import { addOrReplaceBuildPluginManagementPlugin, editMatchingProjectsAndParents } from './EditorFunctions'
+import { editMatchingProjectsAndParents } from './EditorFunctions'
 
 const pluginGroupId = "org.apache.maven.plugins";
 const pluginArtifactId = "maven-compiler-plugin";
@@ -65,7 +65,7 @@ export class UseJava8 implements EditProject {
             editMatchingProjectsAndParents(project, pom => {
                 return pom.packaging() == "jar" || pom.packaging() == "bundle";
             }, pom => {}, pom => {
-                addOrReplaceBuildPluginManagementPlugin(pom, pluginGroupId, pluginArtifactId, `<plugin>
+                pom.addOrReplaceBuildPluginManagementPlugin(pluginGroupId, pluginArtifactId, `<plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <target>1.8</target>

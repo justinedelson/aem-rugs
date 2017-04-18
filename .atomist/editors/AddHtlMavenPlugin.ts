@@ -17,7 +17,7 @@ import { EditProject } from '@atomist/rug/operations/ProjectEditor'
 import { Project } from '@atomist/rug/model/Project'
 import { Pom } from '@atomist/rug/model/Pom'
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
-import { addOrReplaceBuildPluginManagementPlugin, editMatchingProjectsAndParents } from './EditorFunctions'
+import { editMatchingProjectsAndParents } from './EditorFunctions'
 
 const pluginGroupId = "org.apache.sling";
 const pluginArtifactId = "htl-maven-plugin";
@@ -36,7 +36,7 @@ export class AddHtlMavenPlugin implements EditProject {
                 <artifactId>htl-maven-plugin</artifactId>
             </plugin>`);
         }, pom => {
-            addOrReplaceBuildPluginManagementPlugin(pom, pluginGroupId, pluginArtifactId, `<plugin>
+            pom.addOrReplaceBuildPluginManagementPlugin(pluginGroupId, pluginArtifactId, `<plugin>
                     <groupId>${pluginGroupId}</groupId>
                     <artifactId>${pluginArtifactId}</artifactId>
                     <version>${pluginVersion}</version>
