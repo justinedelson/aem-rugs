@@ -22,36 +22,58 @@ import { addOrReplaceBuildPluginManagementPlugin, editMatchingProjectsAndParents
 
 const pluginGroupId = "org.apache.maven.plugins";
 const pluginArtifactId = "maven-compiler-plugin";
+const configValue = "1.8";
 
 @Editor("UseJava8", "Set the Maven Compiler Plugin to use Java 8")
 @Tags("adobe", "java")
 export class UseJava8 implements EditProject {
 
-    replaceSourceAndTarget(pom: Pom, xpath: String) {
-        if (pom.contains(`${xpath}/configuration/source`)) {
-            pom.addOrReplaceNode(`${xpath}/configuration`, `${xpath}/configuration/source`, "source", "<source>1.8</source>");
-        }
-        if (pom.contains(`${xpath}/configuration/target`)) {
-            pom.addOrReplaceNode(`${xpath}/configuration`, `${xpath}/configuration/target`, "target", "<target>1.8</target>");
+    replace(pom: Pom, xpath: String, tagName: string) {
+        let configXpath = `${xpath}/configuration`;
+        let valueXpath = `${configXpath}/${tagName}`;
+        if (pom.contains(valueXpath)) {
+            if (pom.getTextContentFor(valueXpath) != configValue) {
+                pom.addOrReplaceNode(configXpath, valueXpath, tagName, `<${tagName}>${configValue}</${tagName}>`);
+            }
         }
     }
 
+    replaceSourceAndTarget(pom: Pom, xpath: string) {
+        this.replace(pom, xpath, "source");
+        this.replace(pom, xpath, "target");
+    }
+
     edit(project: Project) {
+        let changesMade = false;
         project.context.pathExpressionEngine.with<EveryPom>(project, "/EveryPom()", pom => {
-            let pluginXPath = `/plugins/plugin/artifactId[text() = '${pluginArtifactId}' and ../groupId[text() = '${pluginGroupId}']]/..`;
+            let pluginXPath = `/plugins/plugin/artifactId[text() = '${pluginArtifactId}']/..`;
             let basePluginManagementXPath = `/project/build/pluginManagement${pluginXPath}`;
             let basePluginXPath = `/project/build${pluginXPath}`;
 
             if (pom.contains(basePluginManagementXPath)) {
-                console.log(`update mgmt? ${pom}`)
                 this.replaceSourceAndTarget(pom, basePluginManagementXPath);
+                changesMade = true;
             }
 
             if (pom.contains(basePluginXPath)) {
-                console.log(`update? ${pom}`)
                 this.replaceSourceAndTarget(pom, basePluginXPath);
+                changesMade = true;
             }
         });
+        if (!changesMade) {
+            // no changes made anywhere, so let's find a parent to update
+            editMatchingProjectsAndParents(project, pom => {
+                return pom.packaging() == "jar" || pom.packaging() == "bundle";
+            }, pom => {}, pom => {
+                addOrReplaceBuildPluginManagementPlugin(pom, pluginGroupId, pluginArtifactId, `<plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <target>1.8</target>
+                    <source>1.8</source>
+                </configuration>
+            </plugin>`);
+            });
+        }
     }
 }
 
