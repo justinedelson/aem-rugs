@@ -62,11 +62,10 @@ Name | Required | Default | Description
 
 Run this Rug as follows:
 
-```
-$ cd parent/directory
-$ rug edit aem-rugs:aem-rugs:AddCoreComponent component_folder_name=/apps/test/components/content \
-    component_group="My Project" core_component_name=image component_title="My Image"
-```
+    $ cd parent/directory
+    $ rug edit aem-rugs:aem-rugs:AddCoreComponent component_folder_name=/apps/test/components/content \
+        component_group="My Project" core_component_name=image component_title="My Image"
+
 
 ### AddHtlPlugin
 
@@ -84,10 +83,8 @@ This Rug takes no parameters.
 
 Run this Rug as follows:
 
-```
-$ cd parent/directory
-$ rug edit aem-rugs:aem-rugs:AddHtlPlugin
-```
+    $ cd parent/directory
+    $ rug edit aem-rugs:aem-rugs:AddHtlPlugin
 
 ### UseJava8
 
@@ -101,10 +98,8 @@ This Rug takes no parameters.
 
 Run this Rug as follows:
 
-```
-$ cd parent/directory
-$ rug edit aem-rugs:aem-rugs:UseJava8
-```
+    $ cd parent/directory
+    $ rug edit aem-rugs:aem-rugs:UseJava8
 
 
 ### UseOsgiDSAnnotations
@@ -121,26 +116,23 @@ This Rug takes no parameters.
 
 Run this Rug as follows:
 
-```
-$ cd parent/directory
-$ rug edit aem-rugs:aem-rugs:UseOsgiDSAnnotations
-```
-
+    $ cd parent/directory
+    $ rug edit aem-rugs:aem-rugs:UseOsgiDSAnnotations 
 
 ## Development
+
+### Building
 
 You can build, test, and install the project locally with
 the [Rug CLI][cli].
 
 [cli]: https://github.com/atomist/rug-cli
 
-```
-$ rug test
-$ rug install
-```
+    $ rug test
+    $ rug install
 
-To create a new release of the project, simply push a tag of the form
-`M.N.P` where `M`, `N`, and `P` are integers that form the next
-appropriate [semantic version][semver] for release.  For example:
+### Adding a new Editor
+ 
+To add a new editor, use the standard Rug:
 
-[semver]: http://semver.org
+    $ rug edit atomist-rugs:rug-editors:AddTypeScriptEditor editorName="NewEditor" description="A New Editor"
