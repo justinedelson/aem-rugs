@@ -19,9 +19,6 @@ import { Pom } from '@atomist/rug/model/Pom'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { Result } from "@atomist/rug/test/Result";
-import { addCommonSteps } from "./TestHelpers"
-
-addCommonSteps();
 
 Given("a standalone bundle project using Java 8", (project: Project, world: ProjectScenarioWorld) => {
     project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/just-bundle-java8", "");

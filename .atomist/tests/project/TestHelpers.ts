@@ -17,7 +17,7 @@ import { Pom } from "@atomist/rug/model/Pom";
 import { File } from "@atomist/rug/model/File";
 import { Result } from "@atomist/rug/test/Result";
 import { Project } from "@atomist/rug/model/Project";
-import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/project/Core";
+import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { DOMParser } from 'xmldom';
 import * as xpathSelect from 'xpath.js';
 
@@ -37,24 +37,22 @@ export function getAttributeValue(file: File, xpath: string): string {
     return null;
 }
 
-export function addCommonSteps() {
-    Given("a simple multimodule project", (project: Project, world: ProjectScenarioWorld) => {
-        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule", "");
-    });
+export function checkDependency(project: Project, path: string, groupId: string, artifactId: string): boolean {
+    let pathExpression = "/Pom()";
+    if (path.length > 0) {
+        pathExpression = `/${path}/*[@name='pom.xml']/Pom()`;
+    }
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
+    let pom = eng.scalar(project, new PathExpression<Project,Pom>(pathExpression));
+    return pom.isDependencyPresent(groupId, artifactId);
+}
 
-    Given("a multimodule project with two content packages", (project: Project, world: ProjectScenarioWorld) => {
-        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule-two-content-packages", "");
-    });
-
-    Given("a standalone content-package project", (project: Project, world: ProjectScenarioWorld) => {
-        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/just-content-package", "");
-    });
-
-    Given("a standalone bundle project", (project: Project, world: ProjectScenarioWorld) => {
-        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/just-bundle", "");
-    });
-
-    Given("a multimodule project with a separate parent", (project, world) => {
-        project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule-with-separate-parent", "");
-    });
+export function checkManagedDependency(project: Project, path: string, groupId: string, artifactId: string): boolean {
+    let pathExpression = "/Pom()";
+    if (path.length > 0) {
+        pathExpression = `/${path}/*[@name='pom.xml']/Pom()`;
+    }
+    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
+    let pom = eng.scalar(project, new PathExpression<Project,Pom>(pathExpression));
+    return pom.isDependencyManagementDependencyPresent(groupId, artifactId);
 }

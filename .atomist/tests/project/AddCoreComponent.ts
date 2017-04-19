@@ -19,9 +19,10 @@ import { Pom } from '@atomist/rug/model/Pom'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { Result } from "@atomist/rug/test/Result";
-import { addCommonSteps, getAttributeValue } from "./TestHelpers"
+import { getAttributeValue, checkDependency, checkManagedDependency } from "./TestHelpers"
 
-addCommonSteps();
+const depGroupId = "com.adobe.cq";
+const depArtifactId = "core.wcm.components.core";
 
 When("add core text component", (project: Project, world: ProjectScenarioWorld) => {
     let editor = world.editor("AddCoreComponent");
@@ -77,27 +78,19 @@ Then("the image component in the root project should have the correct editConfig
 });
 
 Then("the core component bundle should be added to the core project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
-    let pom = eng.scalar(project, new PathExpression<Project,Pom>("/core/*[@name='pom.xml']/Pom()"));
-    return pom.isDependencyPresent("com.adobe.cq", "core.wcm.components.core");
+    return checkDependency(project, "core", depGroupId, depArtifactId);
 });
 
 Then("the core component bundle should be added to the root project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
-    let pom = eng.scalar(project, new PathExpression<Project,Pom>("/Pom()"));
-    return pom.isDependencyPresent("com.adobe.cq", "core.wcm.components.core");
+    return checkManagedDependency(project, "", depGroupId, depArtifactId);
 });
 
 Then("the core component bundle should be managed in the root project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
-    let pom = eng.scalar(project, new PathExpression<Project,Pom>("/Pom()"));
-    return pom.isDependencyManagementDependencyPresent("com.adobe.cq", "core.wcm.components.core");
+    return checkManagedDependency(project, "", depGroupId, depArtifactId);
 });
 
 Then("the core component bundle should be managed in the parent project", (project, world): boolean => {
-    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
-    let pom = eng.scalar(project, new PathExpression<Project,Pom>("/parent/*[@name='pom.xml']/Pom()"));
-    return pom.isDependencyManagementDependencyPresent("com.adobe.cq", "core.wcm.components.core");
+    return checkManagedDependency(project, "parent", depGroupId, depArtifactId);
 });
 
 function checkTextComponent(project: Project, path: string) : Result {

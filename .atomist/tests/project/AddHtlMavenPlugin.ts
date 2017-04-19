@@ -20,9 +20,7 @@ import { Pom } from '@atomist/rug/model/Pom'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { Result } from "@atomist/rug/test/Result";
-import { addCommonSteps } from "./TestHelpers"
 
-addCommonSteps();
 
 When("add HTL plugin", (project: Project, world: ProjectScenarioWorld) => {
     let editor = world.editor("AddHtlMavenPlugin");
