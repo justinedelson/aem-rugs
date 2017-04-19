@@ -18,7 +18,7 @@ import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpr
 import { Pom } from '@atomist/rug/model/Pom'
 import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/project/Core";
 import { Result } from "@atomist/rug/test/Result";
-import { getAttributeValue, checkDependency, checkManagedDependency } from "./TestHelpers"
+import { checkDependency, checkDependencyManagement } from "./TestHelpers"
 
 
 const depGroupId = "javax.inject";
@@ -55,11 +55,11 @@ Then("javax.inject was added to the core bundle's dependencies", (p, world): boo
 });
 
 Then("javax.inject was added to the parent pom's dependencyManagement", (p, world): boolean => {
-    return checkManagedDependency(p, "parent", depGroupId, depArtifactId);
+    return checkDependencyManagement(p, "parent", depGroupId, depArtifactId);
 });
 
 Then("javax.inject was added to the root pom's dependencyManagement", (p, world): boolean => {
-    return checkManagedDependency(p, "", depGroupId, depArtifactId);
+    return checkDependencyManagement(p, "", depGroupId, depArtifactId);
 });
 
 Then("javax.inject was added to the root bundle's dependencies", (p, world): boolean => {

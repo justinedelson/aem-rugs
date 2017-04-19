@@ -42,6 +42,10 @@ export abstract class Dependencies {
     public static wcmTaglib : Dependency = new Dependency("com.day.cq.wcm", "cq-wcm-taglib", "5.6.4");
     public static slingTaglib : Dependency = new Dependency("org.apache.sling", "org.apache.sling.scripting.jsp.taglib", "2.2.0");
     public static javaxInject : Dependency = new Dependency("javax.inject", "javax.inject", "1");
+    public static coreComponentsBundle = new Dependency("com.adobe.cq", "core.wcm.components.core", "1.0.0");
+    public static osgiAnnotations = new Dependency("org.osgi", "org.osgi.annotation", "6.0.0");
+    public static osgiComponentAnnotations = new Dependency("org.osgi", "org.osgi.service.component.annotations", "1.3.0");
+    public static osgiMetatypeAnnotations = new Dependency("org.osgi", "org.osgi.service.metatype.annotations", "1.3.0");
 }
 
 export abstract class AemPattern {

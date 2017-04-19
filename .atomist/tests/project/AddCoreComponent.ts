@@ -19,7 +19,7 @@ import { Pom } from '@atomist/rug/model/Pom'
 import { EveryPom } from '@atomist/rug/model/EveryPom'
 import { PathExpression, PathExpressionEngine } from '@atomist/rug/tree/PathExpression'
 import { Result } from "@atomist/rug/test/Result";
-import { getAttributeValue, checkDependency, checkManagedDependency } from "./TestHelpers"
+import { getAttributeValue, checkDependency, checkDependencyManagement } from "./TestHelpers"
 
 const depGroupId = "com.adobe.cq";
 const depArtifactId = "core.wcm.components.core";
@@ -82,15 +82,15 @@ Then("the core component bundle should be added to the core project", (project, 
 });
 
 Then("the core component bundle should be added to the root project", (project, world): boolean => {
-    return checkManagedDependency(project, "", depGroupId, depArtifactId);
+    return checkDependencyManagement(project, "", depGroupId, depArtifactId);
 });
 
 Then("the core component bundle should be managed in the root project", (project, world): boolean => {
-    return checkManagedDependency(project, "", depGroupId, depArtifactId);
+    return checkDependencyManagement(project, "", depGroupId, depArtifactId);
 });
 
 Then("the core component bundle should be managed in the parent project", (project, world): boolean => {
-    return checkManagedDependency(project, "parent", depGroupId, depArtifactId);
+    return checkDependencyManagement(project, "parent", depGroupId, depArtifactId);
 });
 
 function checkTextComponent(project: Project, path: string) : Result {

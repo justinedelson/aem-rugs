@@ -19,6 +19,12 @@ Feature: Use OSGi DS Annotations
     Given a simple multimodule project
     When Use OSGi DS Annotations
     Then changes were made
+    Then the OSGi dependencies are managed in the root pom
+    Then the OSGi dependencies are in the core pom
+    Then the SCR plugin is not managed in the root pom
+    Then the SCR plugin is not configured in the core pom
+    Then the SCR dependency is not managed in the root pom
+    Then the SCR dependency is not in the core pom
 
   Scenario: Use OSGi DS Annotations on a simple content package project doesn't do anything
     Given a standalone content-package project

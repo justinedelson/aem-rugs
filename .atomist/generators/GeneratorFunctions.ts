@@ -106,7 +106,7 @@ export function addContentPackageDependencies(aemVersion: string, pom: Pom): voi
     dependencies.push(getUberJar(aemVersion));
 
     for (let d of dependencies) {
-        d.addOrReplaceManagedDependency(pom);
+        d.addOrReplaceDependency(pom);
     }
 }
 
@@ -136,7 +136,7 @@ export function addBundleDependencies(aemVersion: string, pom: Pom): void {
     let allDependencies = dependencies.concat(testDependencies);
 
     for (let d of allDependencies) {
-        d.addOrReplaceManagedDependency(pom);
+        d.addOrReplaceDependency(pom);
     }
 }
 

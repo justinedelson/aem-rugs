@@ -16,6 +16,7 @@
 import { EditProject } from '@atomist/rug/operations/ProjectEditor';
 import { Project } from '@atomist/rug/model/Project';
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators';
+import { Dependencies } from './Constants'
 import { removeDependencyManagementDependency, editMatchingProjectsAndParents,
             removeBuildPlugin, removeBuildPluginManagementPlugin,
             updateBuildPluginVersionIfNecessary, updateBuildPluginManagementPluginVersionIfNecessary } from './EditorFunctions'
@@ -28,34 +29,20 @@ export class UseOsgiDSAnnotations implements EditProject {
         editMatchingProjectsAndParents(project, pom => {
             return pom.packaging() === "bundle"
         }, pom => {
-            pom.addOrReplaceDependency("org.osgi", "org.osgi.annotation");
-            pom.addOrReplaceDependency("org.osgi", "org.osgi.service.component.annotations");
-            pom.addOrReplaceDependency("org.osgi", "org.osgi.service.metatype.annotations");
-            pom.removeDependency("org.apache.felix", "org.apache.felix.scr.annotations");
-            pom.removeDependency("biz.aQute.bnd", "annotation");
+            Dependencies.osgiAnnotations.addOrReplaceDependency(pom);
+            Dependencies.osgiMetatypeAnnotations.addOrReplaceDependency(pom);
+            Dependencies.osgiComponentAnnotations.addOrReplaceDependency(pom);
+            Dependencies.scrAnnotations.removeDependency(pom);
+            Dependencies.bndAnnotations.removeDependency(pom);
+
             removeBuildPlugin(pom, "org.apache.felix", "maven-scr-plugin");
             updateBuildPluginVersionIfNecessary(pom, "org.apache.felix", "maven-bundle-plugin", "3.2.0");
         }, pom => {
-            pom.addOrReplaceDependencyManagementDependency("org.osgi", "org.osgi.annotation", `<dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.annotation</artifactId>
-                <version>6.0.0</version>
-                <scope>provided</scope>
-            </dependency>`);
-            pom.addOrReplaceDependencyManagementDependency("org.osgi", "org.osgi.service.component.annotations", `<dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.component.annotations</artifactId>
-                <version>1.3.0</version>
-                <scope>provided</scope>
-            </dependency>`);
-            pom.addOrReplaceDependencyManagementDependency("org.osgi", "org.osgi.service.metatype.annotations", `<dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.metatype.annotations</artifactId>
-                <version>1.3.0</version>
-                <scope>provided</scope>
-            </dependency>`);
-            removeDependencyManagementDependency(pom, "org.apache.felix", "org.apache.felix.scr.annotations");
-            removeDependencyManagementDependency(pom, "biz.aQute.bnd", "annotation");
+            Dependencies.osgiAnnotations.addOrReplaceDependencyManagement(pom);
+            Dependencies.osgiMetatypeAnnotations.addOrReplaceDependencyManagement(pom);
+            Dependencies.osgiComponentAnnotations.addOrReplaceDependencyManagement(pom);
+            Dependencies.scrAnnotations.removeDependencyManagement(pom);
+            Dependencies.bndAnnotations.removeDependencyManagement(pom);
 
             removeBuildPluginManagementPlugin(pom, "org.apache.felix", "maven-scr-plugin");
             updateBuildPluginManagementPluginVersionIfNecessary(pom, "org.apache.felix", "maven-bundle-plugin", "3.2.0");

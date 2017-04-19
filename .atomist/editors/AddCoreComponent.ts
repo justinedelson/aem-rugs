@@ -18,7 +18,7 @@ import { Project } from '@atomist/rug/model/Project'
 import { Pattern } from '@atomist/rug/operations/RugOperation'
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
 import { findContentPackageFolderWithFilterCovering, createNodeNameFromTitle, editMatchingProjectsAndParents } from './EditorFunctions'
-import { AemPattern } from "./Constants"
+import { AemPattern, Dependencies } from "./Constants"
 
 let componentMappings = {
     "breadcrumb" : "core/wcm/components/breadcrumb/v1/breadcrumb",
@@ -33,9 +33,7 @@ let componentMappings = {
     "text" : "core/wcm/components/text/v1/text"
 };
 
-let coreComponentBundleGroupId = "com.adobe.cq";
-let coreComponentBundleArtifactId = "core.wcm.components.core";
-let coreComponentBundleVersion = "1.0.0";
+let dependency = Dependencies.coreComponentsBundle;
 
 
 @Editor("AddCoreComponent", "Add a proxy component for one of the core components to an AEM project.")
@@ -110,15 +108,9 @@ export class AddCoreComponent implements EditProject {
         editMatchingProjectsAndParents(project, pom => {
             return pom.packaging() === "bundle";
         }, pom => {
-            pom.addOrReplaceDependency(coreComponentBundleGroupId, coreComponentBundleArtifactId);
+            dependency.addOrReplaceDependency(pom);
         }, pom => {
-            console.log("add/replace dependencyManagement in " + pom.path);
-            pom.addOrReplaceDependencyManagementDependency(coreComponentBundleGroupId, coreComponentBundleArtifactId, `<dependency>
-            <groupId>${coreComponentBundleGroupId}</groupId>
-            <artifactId>${coreComponentBundleArtifactId}</artifactId>
-            <version>${coreComponentBundleVersion}</version>
-            <scope>provided</scope>
-        </dependency>`);
+            dependency.addOrReplaceDependencyManagement(pom);
         })
     }
 }

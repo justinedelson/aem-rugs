@@ -15,13 +15,37 @@
  */
 import { Project } from "@atomist/rug/model/Project";
 import { Given, When, Then, ProjectScenarioWorld } from "@atomist/rug/test/project/Core";
+import { checkDependency, checkDependencyManagement, checkPlugin, checkPluginManagement } from "./TestHelpers"
 
 When("Use OSGi DS Annotations", (p, world) => {
     let editor = world.editor("UseOsgiDSAnnotations");
     world.editWith(editor, {});
 });
 
-Then("fileContains hello txt Hello Worldnot for UseOsgiDSAnnotations is added to your project by AddUseOsgiDSAnnotations", (p, world) => {
+Then("the OSGi dependencies are managed in the root pom", (p, world) => {
+    return checkDependencyManagement(p, "", "org.osgi", "org.osgi.annotation") &&
+        checkDependencyManagement(p, "", "org.osgi", "org.osgi.service.component.annotations") &&
+        checkDependencyManagement(p, "", "org.osgi", "org.osgi.service.metatype.annotations");
+});
 
-    return p.fileContains("hello.txt", "Hello, World!");
+Then("the OSGi dependencies are in the core pom", (p, world) => {
+    return checkDependency(p, "core", "org.osgi", "org.osgi.annotation") &&
+        checkDependency(p, "core", "org.osgi", "org.osgi.service.component.annotations") &&
+        checkDependency(p, "core", "org.osgi", "org.osgi.service.metatype.annotations");
+});
+
+Then("the SCR dependency is not in the core pom", (p, world) => {
+    return !checkDependency(p, "core", "org.apache.felix", "org.apache.felix.scr.annotations");
+});
+
+Then("the SCR dependency is not managed in the root pom", (p, world) => {
+    return !checkDependencyManagement(p, "", "org.apache.felix", "org.apache.felix.scr.annotations");
+});
+
+Then("the SCR plugin is not configured in the core pom", (p, world) => {
+    return !checkPlugin(p, "core", "org.apache.felix", "maven-scr-plugin");
+});
+
+Then("the SCR plugin is not managed in the root pom", (p, world) => {
+    return !checkPluginManagement(p, "", "org.apache.felix", "maven-scr-plugin");
 });

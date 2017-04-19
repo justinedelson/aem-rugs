@@ -37,22 +37,28 @@ export function getAttributeValue(file: File, xpath: string): string {
     return null;
 }
 
-export function checkDependency(project: Project, path: string, groupId: string, artifactId: string): boolean {
+function getPom(project: Project, path: string) {
     let pathExpression = "/Pom()";
     if (path.length > 0) {
         pathExpression = `/${path}/*[@name='pom.xml']/Pom()`;
     }
     let eng: PathExpressionEngine = project.context.pathExpressionEngine;
-    let pom = eng.scalar(project, new PathExpression<Project,Pom>(pathExpression));
-    return pom.isDependencyPresent(groupId, artifactId);
+    let pom = eng.scalar(project, new PathExpression<Project, Pom>(pathExpression));
+    return pom;
 }
 
-export function checkManagedDependency(project: Project, path: string, groupId: string, artifactId: string): boolean {
-    let pathExpression = "/Pom()";
-    if (path.length > 0) {
-        pathExpression = `/${path}/*[@name='pom.xml']/Pom()`;
-    }
-    let eng: PathExpressionEngine = project.context.pathExpressionEngine;
-    let pom = eng.scalar(project, new PathExpression<Project,Pom>(pathExpression));
-    return pom.isDependencyManagementDependencyPresent(groupId, artifactId);
+export function checkDependency(project: Project, path: string, groupId: string, artifactId: string): boolean {
+    return getPom(project, path).isDependencyPresent(groupId, artifactId);
+}
+
+export function checkDependencyManagement(project: Project, path: string, groupId: string, artifactId: string): boolean {
+    return getPom(project, path).isDependencyManagementDependencyPresent(groupId, artifactId);
+}
+
+export function checkPlugin(project: Project, path: string, groupId: string, artifactId: string): boolean {
+    return getPom(project, path).isBuildPluginPresent(groupId, artifactId);
+}
+
+export function checkPluginManagement(project: Project, path: string, groupId: string, artifactId: string): boolean {
+    return getPom(project, path).isBuildPluginManagementPresent(groupId, artifactId);
 }

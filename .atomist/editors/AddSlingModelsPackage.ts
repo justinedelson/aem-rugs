@@ -64,7 +64,7 @@ export class AddSlingModelsPackage implements EditProject {
                 return pom.packaging() == "bundle";
             }
         }, pom => {
-            dependency.addOrReplaceManagedDependency(pom);
+            dependency.addOrReplaceDependency(pom);
 
             pom.addNodeIfNotPresent(pluginXpath, configurationXpath, "configuration", "<configuration></configuration>");
             pom.addNodeIfNotPresent(configurationXpath, instructionsXpath, "instructions", "<instructions></instructions>");

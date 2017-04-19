@@ -34,7 +34,7 @@ export class Dependency {
         pom.addOrReplaceDependencyManagementDependency(this.groupId, this.artifactId, this.getXml());
     }
 
-    addOrReplaceManagedDependency(pom: Pom) {
+    addOrReplaceDependency(pom: Pom) {
         pom.addNodeIfNotPresent("/project", "/project/dependencies", "dependencies", "<dependencies></dependencies>");
         if (this.classifier === "") {
             pom.addOrReplaceDependency(this.groupId, this.artifactId);
@@ -44,6 +44,14 @@ export class Dependency {
                 "dependency",
                 `<dependency><groupId>${this.groupId}</groupId><artifactId>${this.artifactId}</artifactId><classifier>${this.classifier}</classifier></dependency>`);
         }
+    }
+
+    removeDependency(pom: Pom) {
+        pom.removeDependency(this.groupId, this.artifactId);
+    }
+
+    removeDependencyManagement(pom: Pom) {
+        pom.deleteNode(`/project/dependencyManagement/dependencies/dependency/artifactId[text()='${this.artifactId}' and ../groupId[text() = '${this.groupId}']]/..`);
     }
 
     getXml() : string {
