@@ -24,30 +24,28 @@ import { checkDependency, checkDependencyManagement } from "./TestHelpers"
 const depGroupId = "javax.inject";
 const depArtifactId = "javax.inject";
 const packageName = "com.myco.models";
+const folderName = "com/myco/models";
 
 Given("a bundle with the Sling-Model-Packages header defined", (p, world) => {
     p.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/bundle-with-existing-sling-models-package", "");
 });
 
 When("AddSlingModelsPackage is run", (p, world) => {
-    let psworld = world as ProjectScenarioWorld;
-    let editor = psworld.editor("AddSlingModelsPackage");
+    let editor = world.editor("AddSlingModelsPackage");
 
-    psworld.editWith(editor, { packageName: packageName });
+    world.editWith(editor, { packageName: packageName });
 });
 
 When("AddSlingModelsPackage is run with a bundle path of core", (p, world) => {
-    let psworld = world as ProjectScenarioWorld;
-    let editor = psworld.editor("AddSlingModelsPackage");
+    let editor = world.editor("AddSlingModelsPackage");
 
-    psworld.editWith(editor, { packageName: packageName, bundlePath: "/core" });
+    world.editWith(editor, { packageName: packageName, bundlePath: "/core" });
 });
 
 When("AddSlingModelsPackage is run with a bundle path of garbage", (p, world) => {
-    let psworld = world as ProjectScenarioWorld;
-    let editor = psworld.editor("AddSlingModelsPackage");
+    let editor = world.editor("AddSlingModelsPackage");
 
-    psworld.editWith(editor, { packageName: packageName, bundlePath: "/garbage" });
+    world.editWith(editor, { packageName: packageName, bundlePath: "/garbage" });
 });
 
 Then("javax.inject was added to the core bundle's dependencies", (p, world): boolean => {
@@ -87,4 +85,26 @@ Then("the package was added to the existing package", (p, world): Result => {
     } else {
         return Result.Failure(`Package header was not expected value '${expectedValue}'. It was '${packageHeader}'.`);
     }
+});
+
+Then("the package info file was created in the core bundle", (p, world) => {
+    let path = `core/src/main/java/${folderName}/package-info.java`;
+    return p.fileExists(path);
+});
+
+Then("the package info file was created in the root bundle", (p, world) => {
+    let path = `src/main/java/${folderName}/package-info.java`;
+    return p.fileExists(path);
+});
+
+Then("the package info file in the package folder in the core bundle has the BND Version annotation", (p, world) => {
+    let path = `core/src/main/java/${folderName}/package-info.java`;
+    return p.fileHasContent(path, `@aQute.bnd.annotation.Version("1.0.0")
+package ${packageName};`);
+});
+
+Then("the package info file in the package folder in the core bundle has the OSGi Version annotation", (p, world) => {
+    let path = `core/src/main/java/${folderName}/package-info.java`;
+    return p.fileHasContent(path, `@org.osgi.annotation.versioning.Version("1.0.0")
+package ${packageName};`);
 });

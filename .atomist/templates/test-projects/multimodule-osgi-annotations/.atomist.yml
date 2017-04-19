@@ -1,0 +1,33 @@
+---
+kind: "operation"
+client: "rug-cli 0.25.0"
+generator:
+  name: "CreateAemMultimoduleProject"
+  group: "com.adobe.people.jedelson"
+  artifact: "aem-rugs"
+  version: "0.1.0"
+  origin:
+    repo: "git@github.com:justinedelson/aem-rugs.git"
+    branch: "master"
+    sha: "72fe934"
+  parameters:
+    - "group_id": "com.test"
+    - "artifact_id": "test-project"
+    - "apps_folder_name": "test"
+    - "content_package_group": "my-packages"
+    - "aem_version": "6.3"
+    - "project_name": "multimodule"
+
+---
+kind: "operation"
+client: "rug-cli 0.32.0"
+editor:
+  name: "UseOsgiDSAnnotations"
+  group: "aem-rugs"
+  artifact: "aem-rugs"
+  version: "0.3.0"
+  origin:
+    repo: "git@github.com:justinedelson/aem-rugs.git"
+    branch: "master"
+    sha: "8f7930e*"
+

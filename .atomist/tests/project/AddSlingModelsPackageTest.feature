@@ -25,6 +25,8 @@ Feature: Add Sling Models Package
     Then javax.inject was added to the root pom's dependencyManagement
     Then javax.inject was added to the core bundle's dependencies
     Then the package was added to the core bundle's maven-bundle-plugin configuration
+    Then the package info file was created in the core bundle
+    Then the package info file in the package folder in the core bundle has the BND Version annotation
 
   Scenario: AddSlingModelsPackage on a multimodule project fails with a bad bundle path
     Given a simple multimodule project
@@ -51,6 +53,18 @@ Feature: Add Sling Models Package
     Then javax.inject was added to the root pom's dependencyManagement
     Then javax.inject was added to the core bundle's dependencies
     Then the package was added to the core bundle's maven-bundle-plugin configuration
+    Then the package info file was created in the core bundle
+    Then the package info file in the package folder in the core bundle has the BND Version annotation
+
+  Scenario: AddSlingModelsPackage on a multimodule project with OSGi annotation
+    Given a simple multimodule project using OSGi annotations
+    When AddSlingModelsPackage is run
+    Then changes were made
+    Then javax.inject was added to the root pom's dependencyManagement
+    Then javax.inject was added to the core bundle's dependencies
+    Then the package was added to the core bundle's maven-bundle-plugin configuration
+    Then the package info file was created in the core bundle
+    Then the package info file in the package folder in the core bundle has the OSGi Version annotation
 
   Scenario: AddSlingModelsPackage adds to existing package header
     Given a bundle with the Sling-Model-Packages header defined
@@ -59,3 +73,5 @@ Feature: Add Sling Models Package
     Then javax.inject was added to the root pom's dependencyManagement
     Then javax.inject was added to the root bundle's dependencies
     Then the package was added to the existing package
+    Then the package info file was created in the root bundle
+

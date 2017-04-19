@@ -21,6 +21,11 @@ Given("a simple multimodule project", (project: Project, world: ProjectScenarioW
     project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule", "");
 });
 
+Given("a simple multimodule project using OSGi annotations", (project: Project, world: ProjectScenarioWorld) => {
+    project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule-osgi-annotations", "");
+});
+
+
 Given("a multimodule project with two content packages", (project: Project, world: ProjectScenarioWorld) => {
     project.copyEditorBackingFilesWithNewRelativePath(".atomist/templates/test-projects/multimodule-two-content-packages", "");
 });

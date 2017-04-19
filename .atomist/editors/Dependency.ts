@@ -54,6 +54,14 @@ export class Dependency {
         pom.deleteNode(`/project/dependencyManagement/dependencies/dependency/artifactId[text()='${this.artifactId}' and ../groupId[text() = '${this.groupId}']]/..`);
     }
 
+    isDependencyPresent(pom: Pom): boolean {
+        return pom.isDependencyPresent(this.groupId, this.artifactId);
+    }
+
+    isDependencyManagementDependencyPresent(pom: Pom): boolean {
+        return pom.isDependencyManagementDependencyPresent(this.groupId, this.artifactId);
+    }
+
     getXml() : string {
         if (this.classifier === "") {
             return `<dependency>
