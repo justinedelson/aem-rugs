@@ -119,6 +119,32 @@ Run this Rug as follows:
     $ cd parent/directory
     $ rug edit aem-rugs:aem-rugs:UseOsgiDSAnnotations 
 
+### AddSlingModelsPackage
+
+Set up a package in the project for use with Sling Models, i.e. make sure the `javax.inject` annotations are
+available and that the package is in the `Sling-Models-Package` bundle header.
+
+#### Prerequisites
+
+There must be a bundle project either directly or as a child module.
+
+#### Parameters
+
+This Rug takes following parameters.
+
+Name | Required | Default | Description
+-----|----------|---------|------------
+`packageName` | Yes | | The package name
+`bundlePath` | Maybe | | If the project contains multiple bundle modules, specify the path to the module, e.g. `/core` to select the `core` module.
+`packageVersion` | No | 1.0.0 | Thee export version for the package
+
+#### Running
+
+Run this Rug as follows:
+
+    $ cd parent/directory
+    $ rug edit aem-rugs:aem-rugs:AddSlingModelsPackage packageName=com.myco.models
+
 ## Development
 
 ### Building
