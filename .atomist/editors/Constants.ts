@@ -27,7 +27,7 @@ export abstract class Dependencies {
     public static osgiCompendium420: Dependency = new Dependency("org.osgi", "org.osgi.compendium", "4.2.0");
     public static scrAnnotations : Dependency = new Dependency("org.apache.felix", "org.apache.felix.scr.annotations", "1.9.8");
     public static bndAnnotations : Dependency = new Dependency("biz.aQute.bnd", "annotation", "2.3.0");
-    public static servletApi : Dependency = new Dependency("javax.servlet", "servlet-api", "2.5")
+    public static servletApi : Dependency = new Dependency("javax.servlet", "servlet-api", "2.5");
     public static commonsLang3 : Dependency = new Dependency("org.apache.commons", "commons-lang3", "3.0.1");
     public static commonsLang2 : Dependency = new Dependency("commons-lang", "commons-lang", "2.5");
     public static commonsCodec : Dependency = new Dependency("commons-codec", "commons-codec", "1.5");
@@ -39,8 +39,9 @@ export abstract class Dependencies {
     public static junitAddons : Dependency = new Dependency("junit-addons", "junit-addons", "1.4", "jar", "test");
     public static slf4j : Dependency = new Dependency("org.slf4j", "slf4j-api", "1.7.6");
     public static slf4jSimple : Dependency = new Dependency("org.slf4j", "slf4j-simple", "1.7.6", "jar", "test");
-    public static wcmTaglib : Dependency = new Dependency("com.day.cq.wcm", "cq-wcm-taglib", "5.6.4")
-    public static slingTaglib : Dependency = new Dependency("org.apache.sling", "org.apache.sling.scripting.jsp.taglib", "2.2.0")
+    public static wcmTaglib : Dependency = new Dependency("com.day.cq.wcm", "cq-wcm-taglib", "5.6.4");
+    public static slingTaglib : Dependency = new Dependency("org.apache.sling", "org.apache.sling.scripting.jsp.taglib", "2.2.0");
+    public static javaxInject : Dependency = new Dependency("javax.inject", "javax.inject", "1");
 }
 
 export abstract class AemPattern {

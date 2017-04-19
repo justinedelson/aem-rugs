@@ -35,6 +35,7 @@ export class Dependency {
     }
 
     addOrReplaceManagedDependency(pom: Pom) {
+        pom.addNodeIfNotPresent("/project", "/project/dependencies", "dependencies", "<dependencies></dependencies>");
         if (this.classifier === "") {
             pom.addOrReplaceDependency(this.groupId, this.artifactId);
         } else {
