@@ -38,9 +38,9 @@ export class UseOsgiDSAnnotations implements EditProject {
             removeBuildPlugin(pom, "org.apache.felix", "maven-scr-plugin");
             updateBuildPluginVersionIfNecessary(pom, "org.apache.felix", "maven-bundle-plugin", "3.2.0");
         }, pom => {
-            Dependencies.osgiAnnotations.addOrReplaceDependencyManagement(pom);
-            Dependencies.osgiMetatypeAnnotations.addOrReplaceDependencyManagement(pom);
-            Dependencies.osgiComponentAnnotations.addOrReplaceDependencyManagement(pom);
+            Dependencies.osgiAnnotations.addOrReplaceDependencyManagementDependency(pom);
+            Dependencies.osgiMetatypeAnnotations.addOrReplaceDependencyManagementDependency(pom);
+            Dependencies.osgiComponentAnnotations.addOrReplaceDependencyManagementDependency(pom);
             Dependencies.scrAnnotations.removeDependencyManagement(pom);
             Dependencies.bndAnnotations.removeDependencyManagement(pom);
 

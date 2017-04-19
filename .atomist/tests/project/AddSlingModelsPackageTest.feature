@@ -75,3 +75,8 @@ Feature: Add Sling Models Package
     Then the package was added to the existing package
     Then the package info file was created in the root bundle
 
+
+  Scenario: AddSlingModelsPackage doesn't add if already present
+    Given a bundle with the Sling-Model-Packages header defined
+    When AddSlingModelsPackage is run with the existing package
+    Then no changes were made

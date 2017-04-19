@@ -28,6 +28,24 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>multimodule Bundle</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <!-- ====================================================================== -->
     <!-- B U I L D D E F I N I T I O N -->
     <!-- ====================================================================== -->
@@ -52,7 +70,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>com.test.multimodule</Bundle-SymbolicName>
-                        <Sling-Model-Packages>some.existing.package</Sling-Model-Packages>
+                        <Sling-Model-Packages>
+                            some.existing.pkg
+                        </Sling-Model-Packages>
                     </instructions>
                 </configuration>
             </plugin>

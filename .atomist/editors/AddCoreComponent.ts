@@ -110,7 +110,7 @@ export class AddCoreComponent implements EditProject {
         }, pom => {
             dependency.addOrReplaceDependency(pom);
         }, pom => {
-            dependency.addOrReplaceDependencyManagement(pom);
+            dependency.addOrReplaceDependencyManagementDependency(pom);
         })
     }
 }

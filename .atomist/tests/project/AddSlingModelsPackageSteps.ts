@@ -36,6 +36,12 @@ When("AddSlingModelsPackage is run", (p, world) => {
     world.editWith(editor, { packageName: packageName });
 });
 
+When("AddSlingModelsPackage is run with the existing package", (p, world) => {
+    let editor = world.editor("AddSlingModelsPackage");
+
+    world.editWith(editor, { packageName: "some.existing.pkg" });
+});
+
 When("AddSlingModelsPackage is run with a bundle path of core", (p, world) => {
     let editor = world.editor("AddSlingModelsPackage");
 
@@ -79,7 +85,7 @@ Then("the package was added to the existing package", (p, world): Result => {
     let eng = p.context.pathExpressionEngine;
     let pom = eng.scalar(p, new PathExpression<Project, Pom>("/Pom()"));
     let packageHeader = pom.getTextContentFor("/project/build/plugins/plugin/artifactId[text() = 'maven-bundle-plugin']/../configuration/instructions/Sling-Model-Packages");
-    let expectedValue = `some.existing.package,${packageName}`;
+    let expectedValue = `some.existing.pkg,${packageName}`;
     if (packageHeader === expectedValue) {
         return Result.Success;
     } else {

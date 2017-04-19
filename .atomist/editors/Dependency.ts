@@ -30,12 +30,24 @@ export class Dependency {
         this.classifier = classifier;
     }
 
-    addOrReplaceDependencyManagement(pom: Pom) {
+    addDependencyManagementDependencyIfNotPresent(pom: Pom) {
+        if (!pom.isDependencyManagementDependencyPresent(this.groupId, this.artifactId)) {
+            this.addOrReplaceDependencyManagementDependency(pom);
+        }
+    }
+
+    addDependencyIfNotPresent(pom: Pom) {
+        if (!pom.isDependencyPresent(this.groupId, this.artifactId)) {
+            this.addOrReplaceDependency(pom);
+        }
+    }
+
+    addOrReplaceDependencyManagementDependency(pom: Pom) {
         pom.addOrReplaceDependencyManagementDependency(this.groupId, this.artifactId, this.getXml());
     }
 
     addOrReplaceDependency(pom: Pom) {
-        pom.addNodeIfNotPresent("/project", "/project/dependencies", "dependencies", "<dependencies></dependencies>");
+        pom.addNodeIfNotPresent("/project", "/project/dependencies", "dependencies", "<dependencies>\n</dependencies>");
         if (this.classifier === "") {
             pom.addOrReplaceDependency(this.groupId, this.artifactId);
         } else {
@@ -65,19 +77,19 @@ export class Dependency {
     getXml() : string {
         if (this.classifier === "") {
             return `<dependency>
-            <groupId>${this.groupId}</groupId>
-            <artifactId>${this.artifactId}</artifactId>
-            <version>${this.version}</version>
-            <scope>${this.scope}</scope>
-        </dependency>`;
+                <groupId>${this.groupId}</groupId>
+                <artifactId>${this.artifactId}</artifactId>
+                <version>${this.version}</version>
+                <scope>${this.scope}</scope>
+            </dependency>`;
         } else {
             return `<dependency>
-            <groupId>${this.groupId}</groupId>
-            <artifactId>${this.artifactId}</artifactId>
-            <version>${this.version}</version>
-            <scope>${this.scope}</scope>
-            <classifier>${this.classifier}</classifier>
-        </dependency>`;
+                <groupId>${this.groupId}</groupId>
+                <artifactId>${this.artifactId}</artifactId>
+                <version>${this.version}</version>
+                <scope>${this.scope}</scope>
+                <classifier>${this.classifier}</classifier>
+            </dependency>`;
         }
     }
 }

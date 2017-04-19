@@ -84,7 +84,7 @@ export function addDependencyManagement(aemVersion: string, pom: Pom): void {
     let allDependencies = dependencies.concat(testDependencies);
 
     for (let d of allDependencies) {
-        d.addOrReplaceDependencyManagement(pom);
+        d.addOrReplaceDependencyManagementDependency(pom);
     }
 }
 

@@ -74,18 +74,29 @@ export class AddSlingModelsPackage implements EditProject {
                 return pom.packaging() == "bundle";
             }
         }, pom => {
-            Dependencies.javaxInject.addOrReplaceDependency(pom);
+            Dependencies.javaxInject.addDependencyIfNotPresent(pom);
 
             pom.addNodeIfNotPresent(pluginXpath, configurationXpath, "configuration", "<configuration></configuration>");
             pom.addNodeIfNotPresent(configurationXpath, instructionsXpath, "instructions", "<instructions></instructions>");
 
             let newValue = this.packageName;
+            let add = true;
 
             let existingPackages = pom.getTextContentFor(packagesXpath);
-            if (existingPackages && existingPackages != "") {
-                newValue = `${existingPackages},${newValue}`;
+
+            if (existingPackages) {
+                existingPackages = existingPackages.replace(/\s/g, "");
+                if (existingPackages != "") {
+                    if (existingPackages.split(",").indexOf(newValue) == -1) {
+                        newValue = `${existingPackages},${newValue}`;
+                    } else {
+                        add = false;
+                    }
+                }
             }
-            pom.addOrReplaceNode(instructionsXpath, packagesXpath, headerName, `<${headerName}>${newValue}</${headerName}>`);
+            if (add) {
+                pom.addOrReplaceNode(instructionsXpath, packagesXpath, headerName, `<${headerName}>${newValue}</${headerName}>`);
+            }
 
             let packageInfoFile = `${pom.path.replace("pom.xml", "")}src/main/java/${this.packageName.replace(/\./g, "/")}/package-info.java`;
 
@@ -104,7 +115,7 @@ package ${this.packageName};`
                 project.addFile(packageInfoFile, packageFileContent);
             }
         }, pom => {
-            Dependencies.javaxInject.addOrReplaceDependencyManagement(pom);
+            Dependencies.javaxInject.addDependencyManagementDependencyIfNotPresent(pom);
         });
     }
 
