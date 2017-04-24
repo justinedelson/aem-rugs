@@ -151,8 +151,8 @@ Run this Rug as follows:
 
 Before building, you must fetch the NPM modules used:
 
-   $ cd .atomist
-   $ npm install
+    $ cd .atomist
+    $ npm install
 
 You can build, test, and install the project locally with
 the [Rug CLI][cli].
