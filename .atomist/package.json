@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@atomist/rug": "0.25.3",
+    "camelcase": "github:jessitron/camelcase",
     "semver": "^5.3.0",
     "xmldom": "^0.1.27",
     "xpath.js": "^1.0.7"

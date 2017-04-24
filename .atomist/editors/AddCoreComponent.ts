@@ -17,7 +17,8 @@ import { EditProject } from '@atomist/rug/operations/ProjectEditor'
 import { Project } from '@atomist/rug/model/Project'
 import { Pattern } from '@atomist/rug/operations/RugOperation'
 import { Editor, Parameter, Tags } from '@atomist/rug/operations/Decorators'
-import { findContentPackageFolderWithFilterCovering, createNodeNameFromTitle, editMatchingProjectsAndParents } from './EditorFunctions'
+import { camelCase } from 'camelcase/CamelCase'
+import { findContentPackageFolderWithFilterCovering, editMatchingProjectsAndParents } from './EditorFunctions'
 import { AemPattern, Dependencies } from "./Constants"
 
 let componentMappings = {
@@ -87,7 +88,7 @@ export class AddCoreComponent implements EditProject {
             project.fail(`Could not find content package project with filter covering '${absoluteComponentFolderName}'.`);
             return;
         }
-        let componentName = createNodeNameFromTitle(this.component_title);
+        let componentName = camelCase(this.component_title);
         let componentPath = `${absoluteComponentFolderName}/${componentName}`;
         let relativeComponentPath = componentPath.substring(6);
         let componentFolder = `${jcrRootPath}${componentPath}`;
