@@ -194,4 +194,4 @@ the [Rug CLI][cli].
  
 To add a new editor, use the standard Rug:
 
-    $ rug edit atomist-rugs:rug-editors:AddTypeScriptEditor editorName="NewEditor" description="A New Editor"
+    $ rug edit atomist:rug-rugs:AddTypeScriptEditor editorName="NewEditor" description="A New Editor"
