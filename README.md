@@ -10,7 +10,7 @@ This [Rug][rug] project contains Rug Editors and Generators for working with Ado
 
 1. Install the [Rug CLI](http://docs.atomist.com/user-guide/interfaces/cli/install/).
 2. Edit the file `~/.atomist/cli.yml` to include the repository `https://dl.bintray.com/justinedelson/rugs`. If `~/.atomist/cli.yml` does not exist, run `rug list` to generate it.
-3. Use one of the Rug Generators or Editors listed below.
+3. Use one of the Rug Generators or Editors listed below. The sample commands assume you want to specify all parameters on the command line. If you want to use the interactive mode, use either `rug edit -I <editor coordinates>` or `rug generate -I <generator coordinates>`, e.g. `rug generate -I aem-rugs:aem-rugs:AddCoreComponent`.   
  
 ### Sample cli.yml file
 
