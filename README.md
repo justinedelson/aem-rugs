@@ -1,8 +1,36 @@
-# aem-rugs
+# Adobe Experience Manager Rugs
 
 [rug]: http://docs.atomist.com/
 
 This [Rug][rug] project contains Rug Editors and Generators for working with Adobe Experience Manager projects.
+
+> This project, like Rug itself is in active development as is subject to change.
+
+## Usage
+
+1. Install the [Rug CLI](http://docs.atomist.com/user-guide/interfaces/cli/install/).
+2. Edit the file `~/.atomist/cli.yml` to include the repository `https://dl.bintray.com/justinedelson/rugs`. If `~/.atomist/cli.yml` does not exist, run `rug list` to generate it.
+3. Use one of the Rug Generators or Editors listed below.
+ 
+### Sample cli.yml file
+
+    # Set up the path to the local repository
+    local_repository:
+      path: "${user.home}/.atomist/repository"
+
+    # Set up remote repositories to query for Rug archives. Additionally one of the
+    # repositories can also be enabled for publication (publish: true).
+    remote_repositories:
+      central:
+        publish: false
+        url: "http://repo.maven.apache.org/maven2/"
+      rugs:
+        publish: false
+        url: "https://atomist.jfrog.io/atomist/rugs"
+      aem:
+        publish: false
+        url: "https://dl.bintray.com/justinedelson/rugs"
+
 
 ## Rugs
 
@@ -32,7 +60,7 @@ Name | Required | Default | Description
 Run this Rug as follows:
 
 ```
-$ cd parent/directory
+$ cd project/directory
 $ rug generate aem-rugs:aem-rugs:CreateAemMultimoduleProject \
     my-new-project group_id=com.test artifact_id=test-project \
     apps_folder_name=test content_package_group=my-packages aem_version=6.3
@@ -62,7 +90,7 @@ Name | Required | Default | Description
 
 Run this Rug as follows:
 
-    $ cd parent/directory
+    $ cd project/directory
     $ rug edit aem-rugs:aem-rugs:AddCoreComponent component_folder_name=/apps/test/components/content \
         component_group="My Project" core_component_name=image component_title="My Image"
 
@@ -83,7 +111,7 @@ This Rug takes no parameters.
 
 Run this Rug as follows:
 
-    $ cd parent/directory
+    $ cd project/directory
     $ rug edit aem-rugs:aem-rugs:AddHtlPlugin
 
 ### UseJava8
@@ -98,7 +126,7 @@ This Rug takes no parameters.
 
 Run this Rug as follows:
 
-    $ cd parent/directory
+    $ cd project/directory
     $ rug edit aem-rugs:aem-rugs:UseJava8
 
 
@@ -116,7 +144,7 @@ This Rug takes no parameters.
 
 Run this Rug as follows:
 
-    $ cd parent/directory
+    $ cd project/directory
     $ rug edit aem-rugs:aem-rugs:UseOsgiDSAnnotations 
 
 ### AddSlingModelsPackage
@@ -142,7 +170,7 @@ Name | Required | Default | Description
 
 Run this Rug as follows:
 
-    $ cd parent/directory
+    $ cd project/directory
     $ rug edit aem-rugs:aem-rugs:AddSlingModelsPackage packageName=com.myco.models
 
 ## Development
