@@ -173,7 +173,7 @@ Name | Required | Default | Description
 -----|----------|---------|------------
 `packageName` | Yes | | The package name
 `bundlePath` | Maybe | | If the project contains multiple bundle modules, specify the path to the module, e.g. `/core` to select the `core` module.
-`packageVersion` | No | 1.0.0 | Thee export version for the package
+`packageVersion` | No | 1.0.0 | The export version for the package
 
 #### Running
 
