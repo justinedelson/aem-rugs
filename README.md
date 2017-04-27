@@ -31,6 +31,15 @@ This [Rug][rug] project contains Rug Editors and Generators for working with Ado
         publish: false
         url: "https://dl.bintray.com/justinedelson/rugs"
 
+### Project Structure Support
+
+In general, the Editors in this project are meant to be flexible and support a variety of different project structures, including
+cases where the aggregator is the parent, cases where there is a separate parent, multi-bundle, and multi-content package projects.
+For example, Editors that operate on OSGi bundle projects will search for all `pom.xml` files in the current directory
+and below for ones which have `<packaging>bundle</packaging>`. In cases where content is being edited, the same recursive
+search is done, checking both for the correct packaging type and where the content path is covered by the File Vault filter.
+In cases where there is ambiguity, an optional parameter is available to specify the specific project to be edited, e.g.
+in the case of the [AddSlingModelsPackage](#addslingmodelspackage) Editor.
 
 ## Rugs
 
